@@ -1,0 +1,53 @@
+name: newsflash # you probably want to 'snapcraft register <name>'
+base: core22 # the base snap is the execution environment for this snap
+adopt-info: newsflash
+architectures:
+  - build-on: amd64
+license: GPL-3.0
+compression: lzo
+source-code: https://gitlab.com/news-flash/news_flash_gtk
+issues: https://github.com/soumyaDghosh/newsflash-snap/issues
+grade: devel # must be 'stable' to release into candidate/stable channels
+confinement: devmode # use 'strict' once you have the right plugs and slots
+
+parts:
+  rustup:
+    plugin: nil
+    build-packages: [wget]
+    build-environment:
+      - RUSTUP_HOME: $CRAFT_PART_INSTALL/usr/share/rust
+      - CARGO_HOME: $CRAFT_PART_INSTALL/usr/share/rust
+      - CARGO_BUILD_JOBS: $CRAFT_PARALLEL_BUILD_COUNT
+    override-pull: |
+      wget https://sh.rustup.rs -O $CRAFT_PART_SRC/rustup-init.sh
+      chmod +x $CRAFT_PART_SRC/rustup-init.sh
+    override-build: |
+      $CRAFT_PART_SRC/rustup-init.sh -y --no-modify-path
+      mkdir -p $CRAFT_PART_INSTALL/usr/bin
+      for i in `ls $RUSTUP_HOME/bin/`; do
+        ln -s ../share/rust/bin/$i $CRAFT_PART_INSTALL/usr/bin/$i
+      done
+    override-prime: |
+      echo 'Skip Prime'
+  newsflash:
+    after: [rustup]
+    # See 'snapcraft plugins'
+    plugin: meson
+    source: https://gitlab.com/news-flash/news_flash_gtk
+    source-tag: v.2.2.4
+    meson-parameters:
+      - --prefix=/usr
+    override-pull: |
+      craftctl default
+      sed 's|Icon=@icon@|Icon=usr/share/icons/hicolor/scalable/apps/com.gitlab.newsflash.svg|' -i data/com.gitlab.newsflash.desktop.in.in
+      sed 's|Exec=com.gitlab.newsflash|Exec=usr/bin/com.gitlab.newsflash|' -i data/com.gitlab.newsflash.desktop.in.in
+    stage-packages:
+      - libwebkit2gtk-5.0-0
+    parse-info: [usr/share/metainfo/com.gitlab.newsflash.appdata.xml]
+
+apps:
+  newsflash:
+    command: usr/bin/com.gitlab.newsflash
+    extensions: [gnome]
+    common-id: com.gitlab.newsflash
+    desktop: usr/share/applications/com.gitlab.newsflash.desktop
