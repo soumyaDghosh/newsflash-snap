@@ -11,7 +11,7 @@ grade: devel # must be 'stable' to release into candidate/stable channels
 confinement: devmode # use 'strict' once you have the right plugs and slots
 layout:
   /usr/lib/x86_64-linux-gnu/webkit2gtk-5.0:
-    bind: ${SNAP}/usr/lib/x86_64-linux-gnu/webkit2gtk-5.0
+    bind: $SNAP/usr/lib/x86_64-linux-gnu/webkit2gtk-5.0
 
 package-repositories:
   - type: apt
