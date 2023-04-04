@@ -52,6 +52,8 @@ parts:
       craftctl default
       sed 's|Icon=@icon@|Icon=usr/share/icons/hicolor/scalable/apps/com.gitlab.newsflash.svg|' -i data/com.gitlab.newsflash.desktop.in.in
       sed 's|Exec=com.gitlab.newsflash|Exec=usr/bin/com.gitlab.newsflash|' -i data/com.gitlab.newsflash.desktop.in.in
+    build-packages:
+      - libwebkit2gtk-5.0-0
     stage-packages:
       - libwebkit2gtk-5.0-0
     organize:
