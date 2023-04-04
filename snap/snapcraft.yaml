@@ -61,7 +61,20 @@ parts:
     organize:
       snap/newsflash/current/usr: usr
     parse-info: [usr/share/metainfo/com.gitlab.newsflash.appdata.xml]
-
+  cleanup:
+    after:  # Make this part run last; list all your other parts here
+      - newsflash
+      - rustup
+    plugin: nil
+    build-snaps:  # List all content-snaps and base snaps you're using here
+      - gnome-42-2204
+      - gtk-common-themes
+      - core22
+    override-prime: |
+      set -eux
+      for snap in "gnome-42-2204" "gtk-common-themes" "core22"; do
+      cd "/snap/$snap/current" && find . -type f,l -exec rm -f "$SNAPCRAFT_PRIME/{}" \;
+      done
 apps:
   newsflash:
     command: usr/bin/com.gitlab.newsflash
