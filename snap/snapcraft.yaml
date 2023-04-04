@@ -42,14 +42,20 @@ parts:
     plugin: meson
     source: https://gitlab.com/news-flash/news_flash_gtk.git
     source-tag: v.2.2.4
+    build-environment:
+      - RUSTUP_HOME: $CRAFT_STAGE/usr/share/rust
+      - CARGO_HOME: $CRAFT_STAGE/usr/share/rust
+      - CARGO_BUILD_JOBS: $CRAFT_PARALLEL_BUILD_COUNT
     meson-parameters:
-      - --prefix=/usr
+      - --prefix=/snap/newsflash/current/usr
     override-pull: |
       craftctl default
       sed 's|Icon=@icon@|Icon=usr/share/icons/hicolor/scalable/apps/com.gitlab.newsflash.svg|' -i data/com.gitlab.newsflash.desktop.in.in
       sed 's|Exec=com.gitlab.newsflash|Exec=usr/bin/com.gitlab.newsflash|' -i data/com.gitlab.newsflash.desktop.in.in
     stage-packages:
       - libwebkit2gtk-5.0-0
+    organize:
+      snap/newsflash/current/usr: usr
     parse-info: [usr/share/metainfo/com.gitlab.newsflash.appdata.xml]
 
 apps:
@@ -58,3 +64,5 @@ apps:
     extensions: [gnome]
     common-id: com.gitlab.newsflash
     desktop: usr/share/applications/com.gitlab.newsflash.desktop
+    environment:
+      GTK_USE_PORTAL: '1'
