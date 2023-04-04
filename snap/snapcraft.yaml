@@ -33,7 +33,7 @@ parts:
     after: [rustup]
     # See 'snapcraft plugins'
     plugin: meson
-    source: https://gitlab.com/news-flash/news_flash_gtk
+    source: https://gitlab.com/news-flash/news_flash_gtk.git
     source-tag: v.2.2.4
     meson-parameters:
       - --prefix=/usr
