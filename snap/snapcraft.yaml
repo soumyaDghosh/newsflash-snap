@@ -55,6 +55,7 @@ parts:
     build-packages:
       - libwebkit2gtk-5.0-0
       - libwebkit2gtk-5.0-dev
+      - openssl
     stage-packages:
       - libwebkit2gtk-5.0-0
     organize:
