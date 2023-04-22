@@ -68,8 +68,10 @@ parts:
       - libenchant-2-dev
       - libsoup2.4-dev
       - libwpe-1.0-dev
+      - libwpebackend-fdo-1.0-dev
     stage-packages:
       - libwpe-1.0-1
+      - libwpebackend-fdo-1.0-1
   rustup:
     after: [webkitgtk, gi-docgen]
     plugin: nil
