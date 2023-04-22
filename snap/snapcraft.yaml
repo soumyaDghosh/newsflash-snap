@@ -48,9 +48,11 @@ parts:
       - -pyvenv.cfg
   webkitgtk:
     after: [gi-docgen, libicu]
-    source: https://webkitgtk.org/releases/webkitgtk-2.40.1.tar.xz
+    source: https://salsa.debian.org/webkit-team/webkit.git
+    source-tag: upstream/2.40.1
     plugin: cmake
     build-environment:
+      - LD_LIBRARY_PATH: "$CRAFT_STAGE/usr/lib:$LD_LIBRARY_PATH"
       - PYTHONPATH: "$PYTHONPATH:$CRAFT_STAGE/lib/python3.10/site-packages"
     cmake-parameters:
       - -DPORT=GTK
