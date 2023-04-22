@@ -10,6 +10,12 @@ issues: https://github.com/soumyaDghosh/newsflash-snap/issues
 grade: devel # must be 'stable' to release into candidate/stable channels
 confinement: devmode # use 'strict' once you have the right plugs and slots
 
+package-repositories:
+  - type: apt
+    components: [main, multiverse, restricted, universe]
+    suites: [kinetic, kinetic-backports, kinetic-security, kinetic-updates]
+    key-id: F6ECB3762474EDA9D21B7022871920D1991BC93C
+    url: http://security.ubuntu.com/ubuntu
 parts:
   webkitgtk:
     source: https://webkitgtk.org/releases/webkitgtk-2.40.1.tar.xz
