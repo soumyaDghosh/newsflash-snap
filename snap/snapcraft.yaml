@@ -14,6 +14,17 @@ environment:
   # WORKAROUND: Add python modules in Snap to search path
   PYTHONPATH: ${SNAP}/lib/python3.10/site-packages:${SNAP}/usr/lib/python3/dist-packages
 parts:
+  libicu:
+    source: https://github.com/unicode-org/icu.git
+    source-tag: release-73-1
+    source-subdir: icu4c/source
+    plugin: autotools
+    autotools-configure-parameters:
+      # WORKAROUND: Install to /usr instead of /usr/local because it's not in search paths
+      - --prefix=/usr
+      - --disable-renaming
+    build-packages:
+      - doxygen
   gi-docgen:
     source: https://gitlab.gnome.org/GNOME/gi-docgen.git
     source-tag: 2023.1
@@ -36,7 +47,7 @@ parts:
       - -bin/pip3.10
       - -pyvenv.cfg
   webkitgtk:
-    after: [gi-docgen]
+    after: [gi-docgen, libicu]
     source: https://webkitgtk.org/releases/webkitgtk-2.40.1.tar.xz
     plugin: cmake
     build-environment:
@@ -66,14 +77,40 @@ parts:
       - libsqlite3-dev
       - libcurl4-gnutls-dev
       - libenchant-2-dev
-      - libsoup2.4-dev
       - libwpe-1.0-dev
       - libwpebackend-fdo-1.0-dev
+      - libxcomposite-dev
+      - libxdamage-dev
+      - libxrender-dev
+      - libxt-dev
+      - libhyphen-dev
+      - libwoff-dev
+      - libavif-dev
+      - libsystemd-dev
+      - libgstreamer1.0-dev
+      - libgstreamer-plugins-bad1.0-dev
+      - libgstreamer-plugins-base1.0-dev
+      - libgstreamer-plugins-good1.0-dev
+      - gperf
     stage-packages:
+      - bubblewrap
+      - gstreamer1.0-plugins-base
+      - gstreamer1.0-plugins-good
+      - libatomic1
+      - libenchant-2-2
+      - libglx0
+      - libgstreamer-gl1.0-0
+      - libgstreamer-plugins-base1.0-0
+      - libgstreamer1.0-0
+      - libhyphen0
+      - libmanette-0.2-0
+      - libopengl0
+      - libsystemd0
       - libwpe-1.0-1
       - libwpebackend-fdo-1.0-1
+      - libwoff1
   rustup:
-    after: [webkitgtk, gi-docgen]
+    after: [webkitgtk]
     plugin: nil
     build-packages: [wget]
     build-environment:
@@ -92,7 +129,7 @@ parts:
     override-prime: |
       echo 'Skip Prime'
   newsflash:
-    after: [rustup, webkitgtk, gi-docgen]
+    after: [rustup, webkitgtk]
     # See 'snapcraft plugins'
     plugin: meson
     source: https://gitlab.com/news-flash/news_flash_gtk.git
@@ -114,6 +151,7 @@ parts:
       - rustup
       - webkitgtk
       - gi-docgen
+      - libicu
     plugin: nil
     build-snaps:  # List all content-snaps and base snaps you're using here
       - gnome-42-2204
