@@ -27,7 +27,7 @@ parts:
       - doxygen
   gi-docgen:
     source: https://gitlab.gnome.org/GNOME/gi-docgen.git
-    source-tag: 2023.1
+    source-tag: '2023.1'
     plugin: python
     build-environment:
       # WORKAROUND: The python plugin is broken with gnome extension
@@ -52,7 +52,8 @@ parts:
     source-tag: upstream/2.40.1
     plugin: cmake
     build-environment:
-      - LD_LIBRARY_PATH: "$CRAFT_STAGE/usr/lib:$LD_LIBRARY_PATH"
+      - CPPFLAGS: "-I/$CRAFT_PRIME/usr/include"
+      - LDFLAGS: "-L$CRAFT_PRIME/usr/lib/icu"
       - PYTHONPATH: "$PYTHONPATH:$CRAFT_STAGE/lib/python3.10/site-packages"
     cmake-parameters:
       - -DPORT=GTK
@@ -69,11 +70,8 @@ parts:
       - ruby-all-dev
       - libfreetype-dev
       - libgcrypt20-dev
-      - libicu-dev
-      - libjpeg-dev
       - unifdef
       - libmanette-0.2-dev
-      - libjpeg-dev
       - libpng-dev
       - libxslt1-dev
       - libsqlite3-dev
