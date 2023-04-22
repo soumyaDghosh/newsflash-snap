@@ -9,21 +9,44 @@ source-code: https://gitlab.com/news-flash/news_flash_gtk
 issues: https://github.com/soumyaDghosh/newsflash-snap/issues
 grade: devel # must be 'stable' to release into candidate/stable channels
 confinement: devmode # use 'strict' once you have the right plugs and slots
-layout:
-  /usr/lib/x86_64-linux-gnu/webkit2gtk-5.0/WebKitWebProcess:
-    symlink: $SNAP/usr/lib/x86_64-linux-gnu/webkit2gtk-5.0/WebKitWebProcess
-  /usr/lib/x86_64-linux-gnu/webkit2gtk-5.0/WebKitNetworkProcess:
-    symlink: $SNAP/usr/lib/x86_64-linux-gnu/webkit2gtk-5.0/WebKitNetworkProcess
-
-package-repositories:
-  - type: apt
-    components: [main, multiverse, restricted, universe]
-    suites: [kinetic, kinetic-backports, kinetic-security, kinetic-updates]
-    key-id: F6ECB3762474EDA9D21B7022871920D1991BC93C
-    url: http://security.ubuntu.com/ubuntu
 
 parts:
+  webkitgtk:
+    source: https://webkitgtk.org/releases/webkitgtk-2.40.1.tar.xz
+    plugin: cmake
+    build-environment:
+      - PYTHONPATH: "$PYTHONPATH:$CRAFT_STAGE/usr/lib"
+    cmake-parameters:
+      - -DPORT=GTK
+      - -DCMAKE_BUILD_TYPE=Release
+      - -DCMAKE_INSTALL_PREFIX=/usr
+      - -DCMAKE_INSTALL_LIBDIR=lib
+      - -DCMAKE_INSTALL_LIBEXECDIR=lib
+      - -DCMAKE_SKIP_RPATH=ON
+      - -DUSE_AVIF=ON
+      - -DUSE_GTK4=ON
+      - -DENABLE_DOCUMENTATION=ON
+      - -DENABLE_MINIBROWSER=ON
+    build-packages:
+      - ruby-all-dev
+      - libfreetype-dev
+      - libgcrypt20-dev
+      - libicu-dev
+      - libjpeg-dev
+      - unifdef
+      - libmanette-0.2-dev
+      - libjpeg-dev
+      - libpng-dev
+      - libxslt1-dev
+      - libsqlite3-dev
+      - libcurl4-gnutls-dev
+      - libenchant-2-dev
+      - libsoup2.4-dev
+      - gi-docgen
+    stage-packages:
+      - gi-docgen
   rustup:
+    after: [webkitgtk]
     plugin: nil
     build-packages: [wget]
     build-environment:
@@ -42,7 +65,7 @@ parts:
     override-prime: |
       echo 'Skip Prime'
   newsflash:
-    after: [rustup]
+    after: [rustup, webkitgtk]
     # See 'snapcraft plugins'
     plugin: meson
     source: https://gitlab.com/news-flash/news_flash_gtk.git
@@ -53,16 +76,8 @@ parts:
       - CARGO_BUILD_JOBS: $CRAFT_PARALLEL_BUILD_COUNT
     meson-parameters:
       - --prefix=/snap/newsflash/current/usr
-    override-pull: |
-      craftctl default
-      sed 's|Icon=@icon@|Icon=usr/share/icons/hicolor/scalable/apps/com.gitlab.newsflash.svg|' -i data/com.gitlab.newsflash.desktop.in.in
-      sed 's|Exec=com.gitlab.newsflash|Exec=usr/bin/com.gitlab.newsflash|' -i data/com.gitlab.newsflash.desktop.in.in
     build-packages:
-      - libwebkit2gtk-5.0-0
-      - libwebkit2gtk-5.0-dev
       - libssl-dev
-    stage-packages:
-      - libwebkit2gtk-5.0-0
     organize:
       snap/newsflash/current/usr: usr
     parse-info: [usr/share/metainfo/com.gitlab.newsflash.appdata.xml]
@@ -70,6 +85,7 @@ parts:
     after:  # Make this part run last; list all your other parts here
       - newsflash
       - rustup
+      - webkitgtk
     plugin: nil
     build-snaps:  # List all content-snaps and base snaps you're using here
       - gnome-42-2204
@@ -86,5 +102,3 @@ apps:
     extensions: [gnome]
     common-id: com.gitlab.newsflash
     desktop: usr/share/applications/com.gitlab.newsflash.desktop
-    environment:
-      GTK_USE_PORTAL: '1'
