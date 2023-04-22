@@ -40,7 +40,7 @@ parts:
     source: https://webkitgtk.org/releases/webkitgtk-2.40.1.tar.xz
     plugin: cmake
     build-environment:
-      - PYTHONPATH: "$PYTHONPATH:$CRAFT_STAGE/usr/lib"
+      - PYTHONPATH: "$PYTHONPATH:$CRAFT_STAGE/lib/python3.10/site-packages"
     cmake-parameters:
       - -DPORT=GTK
       - -DCMAKE_BUILD_TYPE=Release
