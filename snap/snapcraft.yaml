@@ -17,6 +17,7 @@ parts:
     source-tag: 2023.1
     plugin: python
   webkitgtk:
+    after: [gi-docgen]
     source: https://webkitgtk.org/releases/webkitgtk-2.40.1.tar.xz
     plugin: cmake
     build-environment:
@@ -47,11 +48,8 @@ parts:
       - libcurl4-gnutls-dev
       - libenchant-2-dev
       - libsoup2.4-dev
-      - gi-docgen
-    stage-packages:
-      - gi-docgen
   rustup:
-    after: [webkitgtk]
+    after: [webkitgtk, gi-docgen]
     plugin: nil
     build-packages: [wget]
     build-environment:
@@ -70,7 +68,7 @@ parts:
     override-prime: |
       echo 'Skip Prime'
   newsflash:
-    after: [rustup, webkitgtk]
+    after: [rustup, webkitgtk, gi-docgen]
     # See 'snapcraft plugins'
     plugin: meson
     source: https://gitlab.com/news-flash/news_flash_gtk.git
@@ -91,6 +89,7 @@ parts:
       - newsflash
       - rustup
       - webkitgtk
+      - gi-docgen
     plugin: nil
     build-snaps:  # List all content-snaps and base snaps you're using here
       - gnome-42-2204
