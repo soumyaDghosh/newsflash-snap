@@ -52,7 +52,11 @@ parts:
     source-tag: upstream/2.40.1
     plugin: cmake
     build-environment:
-      - CPPFLAGS: "-I/$CRAFT_PRIME/usr/include"
+      - ICU_ROOT: "$CRAFT_STAGE"
+      - ICU_INCLUDE_DIRS: "$CRAFT_STAGE/usr/include"
+      - ICU_LIB_DIRS: "$CRAFT_STAGE/usr/lib"
+      - CPPFLAGS: "-I/$CRAFT_STAGE/usr/include"
+      - CFLAGS: "-I/$CRAFT_STAGE/usr/include"
       - LDFLAGS: -licudata -licuuc
       - PYTHONPATH: "$PYTHONPATH:$CRAFT_STAGE/lib/python3.10/site-packages"
     cmake-parameters:
