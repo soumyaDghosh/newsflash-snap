@@ -53,7 +53,7 @@ parts:
     plugin: cmake
     build-environment:
       - CPPFLAGS: "-I/$CRAFT_PRIME/usr/include"
-      - LDFLAGS: "-L$CRAFT_PRIME/usr/lib/icu"
+      - LDFLAGS: -licudata -licu
       - PYTHONPATH: "$PYTHONPATH:$CRAFT_STAGE/lib/python3.10/site-packages"
     cmake-parameters:
       - -DPORT=GTK
