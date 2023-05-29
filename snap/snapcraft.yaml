@@ -3,6 +3,9 @@ base: core22 # the base snap is the execution environment for this snap
 adopt-info: newsflash
 architectures:
   - build-on: amd64
+  #- build-on: arm64
+  #- build-on: armhf
+
 license: GPL-3.0
 compression: lzo
 source-code: https://gitlab.com/news-flash/news_flash_gtk
@@ -19,9 +22,7 @@ slots:
     interface: dbus
     bus: session
     name: com.gitlab.newsflash
-environment:
-  # WORKAROUND: Add python modules in Snap to search path
-  PYTHONPATH: ${SNAP}/lib/python3.10/site-packages:${SNAP}/usr/lib/python3/dist-packages
+
 parts:
   rustup:
     plugin: nil
@@ -137,6 +138,7 @@ apps:
     desktop: usr/share/applications/com.gitlab.newsflash.desktop
     environment:
       LD_LIBRARY_PATH: $SNAP/webkitgtk/usr/lib:$SNAP/webkitgtk/usr/lib/$CRAFT_ARCH_TRIPLET:$LD_LIBRARY_PATH
+      GDK_DEBUG: 'portals'
     plugs:
       - unity7
       - network
