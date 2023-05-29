@@ -7,114 +7,23 @@ license: GPL-3.0
 compression: lzo
 source-code: https://gitlab.com/news-flash/news_flash_gtk
 issues: https://github.com/soumyaDghosh/newsflash-snap/issues
-grade: devel # must be 'stable' to release into candidate/stable channels
-confinement: devmode # use 'strict' once you have the right plugs and slots
+grade: stable # must be 'stable' to release into candidate/stable channels
+confinement: strict # use 'strict' once you have the right plugs and slots
 
+layout:
+  /usr/lib/webkitgtk-6.0:
+    bind: $SNAP/webkitgtk/usr/lib/webkitgtk-6.0
+
+slots:
+  newsflash:
+    interface: dbus
+    bus: session
+    name: com.gitlab.newsflash
 environment:
   # WORKAROUND: Add python modules in Snap to search path
   PYTHONPATH: ${SNAP}/lib/python3.10/site-packages:${SNAP}/usr/lib/python3/dist-packages
 parts:
-  libicu:
-    source: https://github.com/unicode-org/icu.git
-    source-tag: release-73-1
-    source-subdir: icu4c/source
-    plugin: autotools
-    autotools-configure-parameters:
-      # WORKAROUND: Install to /usr instead of /usr/local because it's not in search paths
-      - --prefix=/usr
-      - --disable-renaming
-    build-packages:
-      - doxygen
-  gi-docgen:
-    source: https://gitlab.gnome.org/GNOME/gi-docgen.git
-    source-tag: '2023.1'
-    plugin: python
-    build-environment:
-      # WORKAROUND: The python plugin is broken with gnome extension
-      - PATH: ${CRAFT_PART_INSTALL}/bin:${PATH}
-      - PYTHONPATH: ""
-    stage:
-      # WORKAROUND: Skip venv from python plugin
-      - -bin/activate
-      - -bin/activate.csh
-      - -bin/activate.fish
-      - -bin/Activate.ps1
-      - -bin/python
-      - -bin/python3
-      - -bin/python3.10
-      - -bin/pip
-      - -bin/pip3
-      - -bin/pip3.10
-      - -pyvenv.cfg
-  webkitgtk:
-    after: [gi-docgen, libicu]
-    source: https://salsa.debian.org/webkit-team/webkit.git
-    source-tag: upstream/2.40.1
-    plugin: cmake
-    build-environment:
-      - ICU_ROOT: "$CRAFT_STAGE"
-      - ICU_INCLUDE_DIRS: "$CRAFT_STAGE/usr/include"
-      - ICU_LIB_DIRS: "$CRAFT_STAGE/usr/lib"
-      - CPPFLAGS: "-I/$CRAFT_STAGE/usr/include"
-      - CFLAGS: "-I/$CRAFT_STAGE/usr/include"
-      - LDFLAGS: -licudata -licuuc
-      - PYTHONPATH: "$PYTHONPATH:$CRAFT_STAGE/lib/python3.10/site-packages"
-    cmake-parameters:
-      - -DPORT=GTK
-      - -DCMAKE_BUILD_TYPE=Release
-      - -DCMAKE_INSTALL_PREFIX=/usr
-      - -DCMAKE_INSTALL_LIBDIR=lib
-      - -DCMAKE_INSTALL_LIBEXECDIR=lib
-      - -DCMAKE_SKIP_RPATH=ON
-      - -DUSE_AVIF=ON
-      - -DUSE_GTK4=ON
-      - -DENABLE_DOCUMENTATION=ON
-      - -DENABLE_MINIBROWSER=ON
-    build-packages:
-      - ruby-all-dev
-      - libfreetype-dev
-      - libgcrypt20-dev
-      - unifdef
-      - libmanette-0.2-dev
-      - libpng-dev
-      - libxslt1-dev
-      - libsqlite3-dev
-      - libcurl4-gnutls-dev
-      - libenchant-2-dev
-      - libwpe-1.0-dev
-      - libwpebackend-fdo-1.0-dev
-      - libxcomposite-dev
-      - libxdamage-dev
-      - libxrender-dev
-      - libxt-dev
-      - libhyphen-dev
-      - libwoff-dev
-      - libavif-dev
-      - libsystemd-dev
-      - libgstreamer1.0-dev
-      - libgstreamer-plugins-bad1.0-dev
-      - libgstreamer-plugins-base1.0-dev
-      - libgstreamer-plugins-good1.0-dev
-      - gperf
-    stage-packages:
-      - bubblewrap
-      - gstreamer1.0-plugins-base
-      - gstreamer1.0-plugins-good
-      - libatomic1
-      - libenchant-2-2
-      - libglx0
-      - libgstreamer-gl1.0-0
-      - libgstreamer-plugins-base1.0-0
-      - libgstreamer1.0-0
-      - libhyphen0
-      - libmanette-0.2-0
-      - libopengl0
-      - libsystemd0
-      - libwpe-1.0-1
-      - libwpebackend-fdo-1.0-1
-      - libwoff1
   rustup:
-    after: [webkitgtk]
     plugin: nil
     build-packages: [wget]
     build-environment:
@@ -133,29 +42,77 @@ parts:
     override-prime: |
       echo 'Skip Prime'
   newsflash:
-    after: [rustup, webkitgtk]
+    after: [rustup]
     # See 'snapcraft plugins'
     plugin: meson
     source: https://gitlab.com/news-flash/news_flash_gtk.git
-    source-tag: v.2.2.4
+    source-tag: v.2.3.0
+    source-depth: 1
     build-environment:
       - RUSTUP_HOME: $CRAFT_STAGE/usr/share/rust
       - CARGO_HOME: $CRAFT_STAGE/usr/share/rust
       - CARGO_BUILD_JOBS: $CRAFT_PARALLEL_BUILD_COUNT
+      - PKG_CONFIG_PATH: /snap/webkitgtk-sdk/current/usr/lib/pkgconfig:$PKG_CONFIG_PATH
+      - PATH: /snap/webkitgtk-sdk/current/usr/bin:$PATH
+      - XDG_DATA_DIRS: /snap/webkitgtk-sdk/current/usr/share:$XDG_DATA_DIRS
+      - LD_LIBRARY_PATH: /snap/webkitgtk-sdk/current/usr/lib:/snap/webkitgtk-sdk/current/usr/lib/$CRAFT_ARCH_TRIPLET:/snap/webkitgtk-sdk/current/usr/lib/webkitgtk-6.0:/snap/webkitgtk-sdk/current/usr/lib/$CRAFT_ARCH_TRIPLET/girepository-1.0:$LD_LIBRARY_PATH
     meson-parameters:
       - --prefix=/snap/newsflash/current/usr
     build-packages:
       - libssl-dev
+      - bubblewrap
+      - gettext
+      - gperf
+      - icu-devtools
+      - libavif-dev
+      - libcairo2-dev
+      - libcurl4-gnutls-dev
+      - libdav1d-dev
+      - libenchant-2-dev
+      - libepoxy-dev
+      - libfreetype-dev
+      - libgcrypt20-dev
+      - libghc-text-icu-dev
+      - libghc-text-icu-prof
+      - libgav1-dev
+      - libglx-dev
+      - libgstreamer1.0-dev
+      - libgstreamer-plugins-bad1.0-dev
+      - libgstreamer-plugins-base1.0-dev
+      - libgstreamer-plugins-good1.0-dev
+      - libhyphen-dev
+      - liblcms2-dev
+      - libmanette-0.2-dev
+      - libnghttp2-dev
+      - libopenjp2-7-dev
+      - libopengl-dev
+      - libpng-dev
+      - libsoup-3.0-dev
+      - libsecret-1-dev
+      - libseccomp-dev
+      - libsqlite3-dev
+      - libtasn1-6-dev
+      - libwebp-dev
+      - libwpe-1.0-dev
+      - libwpebackend-fdo-1.0-dev
+      - libwoff-dev
+      - libxcomposite-dev
+      - libxdamage-dev
+      - libxrender-dev
+      - libxslt1-dev
+      - libxt-dev
+      - ruby-all-dev
+      - unifdef
+      - xdg-dbus-proxy      
+    build-snaps:
+      - webkitgtk-sdk/latest/edge
     organize:
-      snap/newsflash/current/usr: usr
-    parse-info: [usr/share/metainfo/com.gitlab.newsflash.appdata.xml]
+      snap/newsflash/current: .
+    parse-info: [ usr/share/metainfo/com.gitlab.newsflash.appdata.xml ]
   cleanup:
     after:  # Make this part run last; list all your other parts here
       - newsflash
       - rustup
-      - webkitgtk
-      - gi-docgen
-      - libicu
     plugin: nil
     build-snaps:  # List all content-snaps and base snaps you're using here
       - gnome-42-2204
@@ -166,9 +123,21 @@ parts:
       for snap in "gnome-42-2204" "gtk-common-themes" "core22"; do
       cd "/snap/$snap/current" && find . -type f,l -exec rm -f "$SNAPCRAFT_PRIME/{}" \;
       done
+
+plugs:
+  webkitgtk:
+    interface: content
+    target: $SNAP/webkitgtk
+    default-provider: webkitgtk
 apps:
   newsflash:
     command: usr/bin/com.gitlab.newsflash
     extensions: [gnome]
     common-id: com.gitlab.newsflash
     desktop: usr/share/applications/com.gitlab.newsflash.desktop
+    environment:
+      LD_LIBRARY_PATH: $SNAP/webkitgtk/usr/lib:$SNAP/webkitgtk/usr/lib/$CRAFT_ARCH_TRIPLET:$LD_LIBRARY_PATH
+    plugs:
+      - unity7
+      - network
+      - network-status
