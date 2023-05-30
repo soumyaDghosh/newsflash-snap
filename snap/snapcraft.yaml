@@ -60,51 +60,7 @@ parts:
     meson-parameters:
       - --prefix=/snap/newsflash/current/usr
     build-packages:
-      - libssl-dev
-      - bubblewrap
-      - gettext
-      - gperf
-      - icu-devtools
-      - libavif-dev
-      - libcairo2-dev
-      - libcurl4-gnutls-dev
-      - libdav1d-dev
-      - libenchant-2-dev
-      - libepoxy-dev
-      - libfreetype-dev
-      - libgcrypt20-dev
-      - libghc-text-icu-dev
-      - libghc-text-icu-prof
-      - libgav1-dev
-      - libglx-dev
-      - libgstreamer1.0-dev
-      - libgstreamer-plugins-bad1.0-dev
-      - libgstreamer-plugins-base1.0-dev
-      - libgstreamer-plugins-good1.0-dev
-      - libhyphen-dev
-      - liblcms2-dev
-      - libmanette-0.2-dev
-      - libnghttp2-dev
-      - libopenjp2-7-dev
-      - libopengl-dev
-      - libpng-dev
-      - libsoup-3.0-dev
-      - libsecret-1-dev
-      - libseccomp-dev
-      - libsqlite3-dev
-      - libtasn1-6-dev
-      - libwebp-dev
-      - libwpe-1.0-dev
-      - libwpebackend-fdo-1.0-dev
-      - libwoff-dev
-      - libxcomposite-dev
-      - libxdamage-dev
-      - libxrender-dev
-      - libxslt1-dev
-      - libxt-dev
-      - ruby-all-dev
-      - unifdef
-      - xdg-dbus-proxy      
+      - libssl-dev      
     build-snaps:
       - webkitgtk-sdk/latest/edge
     organize:
