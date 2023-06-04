@@ -3,8 +3,8 @@ base: core22 # the base snap is the execution environment for this snap
 adopt-info: newsflash
 architectures:
   - build-on: amd64
-  #- build-on: arm64
-  #- build-on: armhf
+  - build-on: arm64
+  - build-on: armhf
 
 license: GPL-3.0
 compression: lzo
@@ -14,8 +14,8 @@ grade: stable # must be 'stable' to release into candidate/stable channels
 confinement: strict # use 'strict' once you have the right plugs and slots
 
 layout:
-  /usr/lib/webkitgtk-6.0:
-    bind: $SNAP/webkitgtk/usr/lib/webkitgtk-6.0
+  /usr/lib/$CRAFT_ARCH_TRIPLET/webkitgtk-6.0:
+    bind: $SNAP/webkitgtk-6.0/usr/lib/$CRAFT_ARCH_TRIPLET/webkitgtk-6.0
 
 slots:
   newsflash:
@@ -33,7 +33,7 @@ parts:
       - CARGO_BUILD_JOBS: $CRAFT_PARALLEL_BUILD_COUNT
     override-pull: |
       wget https://sh.rustup.rs -O $CRAFT_PART_SRC/rustup-init.sh
-      chmod +x $CRAFT_PART_SRC/rustup-init.sh
+      chmod +x $CRAFT_PART_SRC/rustup-init.shusr/lib/x86_64-linux-gnu/webkitgtk-6.0/WebKitNetworkProcess
     override-build: |
       $CRAFT_PART_SRC/rustup-init.sh -y --no-modify-path
       mkdir -p $CRAFT_PART_INSTALL/usr/bin
@@ -53,19 +53,104 @@ parts:
       - RUSTUP_HOME: $CRAFT_STAGE/usr/share/rust
       - CARGO_HOME: $CRAFT_STAGE/usr/share/rust
       - CARGO_BUILD_JOBS: $CRAFT_PARALLEL_BUILD_COUNT
-      - PKG_CONFIG_PATH: /snap/webkitgtk-sdk/current/usr/lib/pkgconfig:$PKG_CONFIG_PATH
-      - PATH: /snap/webkitgtk-sdk/current/usr/bin:$PATH
-      - XDG_DATA_DIRS: /snap/webkitgtk-sdk/current/usr/share:$XDG_DATA_DIRS
-      - LD_LIBRARY_PATH: /snap/webkitgtk-sdk/current/usr/lib:/snap/webkitgtk-sdk/current/usr/lib/$CRAFT_ARCH_TRIPLET:/snap/webkitgtk-sdk/current/usr/lib/webkitgtk-6.0:/snap/webkitgtk-sdk/current/usr/lib/$CRAFT_ARCH_TRIPLET/girepository-1.0:$LD_LIBRARY_PATH
+      - PKG_CONFIG_PATH: /snap/webkitgtk-6-gnome-2204-sdk/current/usr/lib/$CRAFT_ARCH_TRIPLET/pkgconfig:$PKG_CONFIG_PATH
+      - PATH: /snap/webkitgtk-6-gnome-2204-sdk/current/usr/bin:$PATH
+      - XDG_DATA_DIRS: /snap/webkitgtk-6-gnome-2204-sdk/current/usr/share:$XDG_DATA_DIRS
+      - LD_LIBRARY_PATH: /snap/webkitgtk-6-gnome-2204-sdk/current/usr/lib:/snap/webkitgtk-6-gnome-2204-sdk/current/usr/lib/$CRAFT_ARCH_TRIPLET:/snap/webkitgtk-6-gnome-2204-sdk/current/usr/lib/webkitgtk-6.0:/snap/webkitgtk-6-gnome-2204-sdk/current/usr/lib/$CRAFT_ARCH_TRIPLET/girepository-1.0:$LD_LIBRARY_PATH
     meson-parameters:
       - --prefix=/snap/newsflash/current/usr
+      - -Dbuildtype=release
+      - -Doptimization=2
     build-packages:
-      - libssl-dev      
+      - libssl-dev 
+      - libelf1
+    stage-packages:
+      - libgstreamer-plugins-bad1.0-0
+    override-pull: |
+      craftctl default
+      patch -p1 < $CRAFT_PROJECT_DIR/newsflash.patch
+    override-build: |
+      craftctl default
+      mkdir -p $CRAFT_PART_INSTALL/meta/gui
+      cp -r $CRAFT_PART_INSTALL/snap/newsflash/current/usr/share/icons meta/gui/
+      for i in `find $CRAFT_PART_INSTALL/meta/gui/icons -name "*.svg" -o -name "*.png"`; do
+        mv $i "`dirname $i`/snap.$CRAFT_PROJECT_NAME.`basename $i`"
+      done
     build-snaps:
-      - webkitgtk-sdk/latest/edge
+      - webkitgtk-6-gnome-2204-sdk/latest/edge
     organize:
       snap/newsflash/current: .
     parse-info: [ usr/share/metainfo/com.gitlab.newsflash.appdata.xml ]
+    prime:
+      - -usr/lib/x86_64-linux-gnu/libgstallocators-1.0.so.0
+      - -usr/lib/x86_64-linux-gnu/libgstallocators-1.0.so.0.2001.0
+      - -usr/lib/x86_64-linux-gnu/libgstapp-1.0.so.0
+      - -usr/lib/x86_64-linux-gnu/libgstapp-1.0.so.0.2001.0
+      - -usr/lib/x86_64-linux-gnu/libgstaudio-1.0.so.0
+      - -usr/lib/x86_64-linux-gnu/libgstaudio-1.0.so.0.2001.0
+      - -usr/lib/x86_64-linux-gnu/libgstfft-1.0.so.0
+      - -usr/lib/x86_64-linux-gnu/libgstfft-1.0.so.0.2001.0
+      - -usr/lib/x86_64-linux-gnu/libgstpbutils-1.0.so.0
+      - -usr/lib/x86_64-linux-gnu/libgstpbutils-1.0.so.0.2001.0
+      - -usr/lib/x86_64-linux-gnu/libgstriff-1.0.so.0
+      - -usr/lib/x86_64-linux-gnu/libgstriff-1.0.so.0.2001.0
+      - -usr/lib/x86_64-linux-gnu/libgstrtp-1.0.so.0
+      - -usr/lib/x86_64-linux-gnu/libgstrtp-1.0.so.0.2001.0
+      - -usr/lib/x86_64-linux-gnu/libgstrtsp-1.0.so.0
+      - -usr/lib/x86_64-linux-gnu/libgstrtsp-1.0.so.0.2001.0
+      - -usr/lib/x86_64-linux-gnu/libgstsdp-1.0.so.0
+      - -usr/lib/x86_64-linux-gnu/libgstsdp-1.0.so.0.2001.0
+      - -usr/lib/x86_64-linux-gnu/libgsttag-1.0.so.0
+      - -usr/lib/x86_64-linux-gnu/libgsttag-1.0.so.0.2001.0
+      - -usr/lib/x86_64-linux-gnu/libgstvideo-1.0.so.0
+      - -usr/lib/x86_64-linux-gnu/libgstvideo-1.0.so.0.2001.0
+      - -usr/share/doc/libgstreamer-plugins-base1.0-0/changelog.Debian.gz
+      - -usr/share/doc/libgstreamer-plugins-base1.0-0/copyright
+      - -usr/share/gst-plugins-base/1.0/license-translations.dict
+      - -usr/lib/x86_64-linux-gnu/libdrm.so.2
+      - -usr/lib/x86_64-linux-gnu/libdrm.so.2.4.0
+      - -usr/share/doc/libdrm2/NEWS.Debian.gz
+      - -usr/share/doc/libdrm2/changelog.Debian.gz
+      - -usr/share/doc/libdrm2/copyright
+      - -usr/share/doc/libdrm-common/changelog.Debian.gz
+      - -usr/share/doc/libdrm-common/copyright
+      - -usr/share/libdrm/amdgpu.ids
+      - -usr/lib/x86_64-linux-gnu/gstreamer-1.0/libgstcoreelements.so
+      - -usr/lib/x86_64-linux-gnu/gstreamer-1.0/libgstcoretracers.so
+      - -usr/lib/x86_64-linux-gnu/gstreamer1.0/gstreamer-1.0/gst-plugin-scanner
+      - -usr/lib/x86_64-linux-gnu/gstreamer1.0/gstreamer-1.0/gst-ptp-helper
+      - -usr/lib/x86_64-linux-gnu/libgstbase-1.0.so.0
+      - -usr/lib/x86_64-linux-gnu/libgstbase-1.0.so.0.2001.0
+      - -usr/lib/x86_64-linux-gnu/libgstcheck-1.0.so.0
+      - -usr/lib/x86_64-linux-gnu/libgstcheck-1.0.so.0.2001.0
+      - -usr/lib/x86_64-linux-gnu/libgstcontroller-1.0.so.0
+      - -usr/lib/x86_64-linux-gnu/libgstcontroller-1.0.so.0.2001.0
+      - -usr/lib/x86_64-linux-gnu/libgstnet-1.0.so.0
+      - -usr/lib/x86_64-linux-gnu/libgstnet-1.0.so.0.2001.0
+      - -usr/lib/x86_64-linux-gnu/libgstreamer-1.0.so.0
+      - -usr/lib/x86_64-linux-gnu/libgstreamer-1.0.so.0.2001.0
+      - -usr/share/doc/libgstreamer1.0-0/changelog.Debian.gz
+      - -usr/share/doc/libgstreamer1.0-0/copyright
+      - -usr/lib/x86_64-linux-gnu/glib-2.0/gio-launch-desktop
+      - -usr/lib/x86_64-linux-gnu/glib-2.0/gio-querymodules
+      - -usr/lib/x86_64-linux-gnu/glib-2.0/glib-compile-schemas
+      - -usr/lib/x86_64-linux-gnu/libgio-2.0.so.0
+      - -usr/lib/x86_64-linux-gnu/libgio-2.0.so.0.7200.1
+      - -usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+      - -usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.7200.1
+      - -usr/lib/x86_64-linux-gnu/libgmodule-2.0.so.0
+      - -usr/lib/x86_64-linux-gnu/libgmodule-2.0.so.0.7200.1
+      - -usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0
+      - -usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.7200.1
+      - -usr/lib/x86_64-linux-gnu/libgthread-2.0.so.0
+      - -usr/lib/x86_64-linux-gnu/libgthread-2.0.so.0.7200.1
+      - -usr/share/doc/libglib2.0-0/NEWS.gz
+      - -usr/share/doc/libglib2.0-0/README.md
+      - -usr/share/doc/libglib2.0-0/changelog.Debian.gz
+      - -usr/share/doc/libglib2.0-0/copyright
+      - -usr/share/glib-2.0/clean-up-unmanaged-libraries
+      - -usr/share/lintian/overrides/libglib2.0-0 
+
   cleanup:
     after:  # Make this part run last; list all your other parts here
       - newsflash
@@ -84,8 +169,8 @@ parts:
 plugs:
   webkitgtk:
     interface: content
-    target: $SNAP/webkitgtk
-    default-provider: webkitgtk
+    target: $SNAP/webkitgtk-6.0
+    default-provider: webkitgtk-6-gnome-2204
 apps:
   newsflash:
     command: usr/bin/com.gitlab.newsflash
@@ -93,7 +178,7 @@ apps:
     common-id: com.gitlab.newsflash
     desktop: usr/share/applications/com.gitlab.newsflash.desktop
     environment:
-      LD_LIBRARY_PATH: $SNAP/webkitgtk/usr/lib:$SNAP/webkitgtk/usr/lib/$CRAFT_ARCH_TRIPLET:$LD_LIBRARY_PATH
+      LD_LIBRARY_PATH: $SNAP/webkitgtk-6.0/usr/lib:$SNAP/webkitgtk-6.0/usr/lib/$CRAFT_ARCH_TRIPLET:$LD_LIBRARY_PATH
       GDK_DEBUG: 'portals'
     plugs:
       - unity7
