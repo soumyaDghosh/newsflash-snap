@@ -1,0 +1,62 @@
+diff -Naur a/data/com.gitlab.newsflash.appdata.xml.in.in b/data/com.gitlab.newsflash.appdata.xml.in.in
+--- a/data/com.gitlab.newsflash.appdata.xml.in.in	2023-06-04 04:57:58.134903776 +0530
++++ b/data/com.gitlab.newsflash.appdata.xml.in.in	2023-06-04 04:58:59.618280567 +0530
+@@ -2,6 +2,7 @@
+ <!-- Bilal Elmoussaoui 2019 <bilal.elmoussaoui@gnome.org> -->
+ <component type="desktop-application">
+   <id>@appid@</id>
++	<icon type="stock">snap.newsflash.@appid@</icon>  
+   <metadata_license>CC0</metadata_license>
+   <project_license>GPL-3.0+</project_license>
+   <name>NewsFlash</name>
+@@ -479,4 +480,4 @@
+   <translation type="gettext">newsflash</translation>
+   <launchable type="desktop-id">@appid@.desktop</launchable>
+   <developer_name>Jan Lukas Gernert</developer_name>
+-</component>
+\ No newline at end of file
++</component>
+diff -Naur a/data/com.gitlab.newsflash.desktop.in.in b/data/com.gitlab.newsflash.desktop.in.in
+--- a/data/com.gitlab.newsflash.desktop.in.in	2023-06-04 04:57:24.701276124 +0530
++++ b/data/com.gitlab.newsflash.desktop.in.in	2023-06-04 04:59:19.166634414 +0530
+@@ -9,6 +9,6 @@
+ Categories=GNOME;GTK;Network;Feed;
+ Keywords=Gnome;GTK;RSS;Feed;
+ # Translators: Do NOT translate or transliterate this text (this is an icon file name)!
+-Icon=@icon@
++Icon=snap.newsflash.@icon@
+ StartupNotify=true
+ X-Purism-FormFactor=Workstation;Mobile;
+diff -Naur a/src/app.rs b/src/app.rs
+--- a/src/app.rs	2023-06-06 16:01:47.136818875 +0530
++++ b/src/app.rs	2023-06-06 16:52:52.094073151 +0530
+@@ -3,6 +3,7 @@
+ use reqwest::Client;
+ use std::collections::HashSet;
+ use std::path::PathBuf;
++use std::path::Path;
+ use std::sync::Arc;
+ use std::time;
+ 
+@@ -16,7 +17,7 @@
+ use futures::executor::{ThreadPool, ThreadPoolBuilder};
+ use futures::FutureExt;
+ use gdk4::prelude::*;
+-use gio::{subclass::prelude::*, ApplicationFlags, Notification, NotificationPriority, ThemedIcon};
++use gio::{subclass::prelude::*, ApplicationFlags, Notification, NotificationPriority, FileIcon};
+ use glib::{clone, subclass::types::ObjectSubclass, Continue, Receiver, Sender, SourceId};
+ use gtk4::{prelude::*, FileChooserNative};
+ use gtk4::{subclass::prelude::GtkApplicationImpl, FileChooserAction, FileFilter, ResponseType};
+@@ -913,10 +914,10 @@
+             };
+ 
+             let notification = Notification::new(&summary);
++            let path = gio::File::for_path(Path::new("/snap/newsflash/current/usr/share/icons/hicolor/symbolic/apps/com.gitlab.newsflash-symbolic.svg"));
+             notification.set_body(Some(&message));
+             notification.set_priority(NotificationPriority::Normal);
+-            notification.set_icon(&ThemedIcon::new(APP_ID));
+-
++            notification.set_icon(&gio::FileIcon::new(&path));
+             self.send_notification(Some("newsflash_sync"), &notification);
+         }
+     }
