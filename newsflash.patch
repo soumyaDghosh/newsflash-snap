@@ -29,7 +29,23 @@ diff -Naur a/data/com.gitlab.newsflash.desktop.in.in b/data/com.gitlab.newsflash
  X-Purism-FormFactor=Workstation;Mobile;
 diff -Naur a/src/app.rs b/src/app.rs
 --- a/src/app.rs	2023-07-04 09:49:12.550778737 +0530
-+++ b/src/app.rs	2023-07-04 09:46:27.272122795 +0530
++++ b/src/app.rs	2023-07-04 12:59:31.842071861 +0530
+@@ -9,6 +9,7 @@
+ use std::rc::Rc;
+ use std::sync::Arc;
+ use std::time;
++use std::path::Path;
+ 
+ use crate::content_page::ContentPageState;
+ use crate::edit_category_dialog::EditCategoryDialog;
+@@ -21,7 +22,6 @@
+ use gdk4::prelude::*;
+ use gio::{
+     prelude::PowerProfileMonitorExt, subclass::prelude::*, ApplicationFlags, Notification, NotificationPriority,
+-    ThemedIcon,
+ };
+ use glib::{clone, subclass::types::ObjectSubclass, Continue, SourceId};
+ use gtk4::{prelude::*, FileChooserNative};
 @@ -933,10 +933,10 @@
              };
  
