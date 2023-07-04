@@ -15,7 +15,7 @@ confinement: strict # use 'strict' once you have the right plugs and slots
 
 layout:
   /usr/lib/x86_64-linux-gnu/webkitgtk-6.0:
-    bind: $SNAP/webkitgtk6/usr/lib/x86_64-linux-gnu/webkitgtk-6.0
+    bind: $SNAP/webkitgtk-platform/usr/lib/x86_64-linux-gnu/webkitgtk-6.0
 
 slots:
   newsflash:
@@ -98,7 +98,7 @@ parts:
 plugs:
   webkitgtk-6-gnome-2204:
     interface: content
-    target: $SNAP/webkitgtk6
+    target: $SNAP/webkitgtk-platform
     default-provider: webkitgtk-6-gnome-2204
 apps:
   newsflash:
@@ -107,7 +107,7 @@ apps:
     common-id: com.gitlab.newsflash
     desktop: usr/share/applications/com.gitlab.newsflash.desktop
     environment:
-      LD_LIBRARY_PATH: $SNAP/webkitgtk6/usr/lib/$SNAPCRAFT_ARCH_TRIPLET:$SNAP/webkitgtk6/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/webkitgtk-6.0:$LD_LIBRARY_PATH
+      LD_LIBRARY_PATH: $SNAP/webkitgtk-platform/usr/lib/$SNAPCRAFT_ARCH_TRIPLET:$SNAP/webkitgtk-platform/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/webkitgtk-6.0:$LD_LIBRARY_PATH
       GDK_DEBUG: 'portals'
     plugs:
       - unity7

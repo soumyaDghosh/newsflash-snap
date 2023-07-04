@@ -28,26 +28,9 @@ diff -Naur a/data/com.gitlab.newsflash.desktop.in.in b/data/com.gitlab.newsflash
  StartupNotify=true
  X-Purism-FormFactor=Workstation;Mobile;
 diff -Naur a/src/app.rs b/src/app.rs
---- a/src/app.rs	2023-06-06 16:01:47.136818875 +0530
-+++ b/src/app.rs	2023-06-06 16:52:52.094073151 +0530
-@@ -3,6 +3,7 @@
- use reqwest::Client;
- use std::collections::HashSet;
- use std::path::PathBuf;
-+use std::path::Path;
- use std::sync::Arc;
- use std::time;
- 
-@@ -16,7 +17,7 @@
- use futures::executor::{ThreadPool, ThreadPoolBuilder};
- use futures::FutureExt;
- use gdk4::prelude::*;
--use gio::{subclass::prelude::*, ApplicationFlags, Notification, NotificationPriority, ThemedIcon};
-+use gio::{subclass::prelude::*, ApplicationFlags, Notification, NotificationPriority, FileIcon};
- use glib::{clone, subclass::types::ObjectSubclass, Continue, Receiver, Sender, SourceId};
- use gtk4::{prelude::*, FileChooserNative};
- use gtk4::{subclass::prelude::GtkApplicationImpl, FileChooserAction, FileFilter, ResponseType};
-@@ -913,10 +914,10 @@
+--- a/src/app.rs	2023-07-04 09:49:12.550778737 +0530
++++ b/src/app.rs	2023-07-04 09:46:27.272122795 +0530
+@@ -933,10 +933,10 @@
              };
  
              let notification = Notification::new(&summary);
