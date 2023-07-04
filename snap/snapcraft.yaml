@@ -47,7 +47,7 @@ parts:
     # See 'snapcraft plugins'
     plugin: meson
     source: https://gitlab.com/news-flash/news_flash_gtk.git
-    source-tag: v.2.3.0
+    source-tag: v.2.3.1
     source-depth: 1
     build-environment:
       - RUSTUP_HOME: $CRAFT_STAGE/usr/share/rust
@@ -62,7 +62,7 @@ parts:
       - -Dbuildtype=release
       - -Doptimization=2
     build-packages:
-      - libssl-dev 
+      - libssl-dev
       - libelf1
     override-pull: |
       craftctl default
