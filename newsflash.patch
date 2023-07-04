@@ -5,7 +5,7 @@ diff -Naur a/data/com.gitlab.newsflash.appdata.xml.in.in b/data/com.gitlab.newsf
  <!-- Bilal Elmoussaoui 2019 <bilal.elmoussaoui@gnome.org> -->
  <component type="desktop-application">
    <id>@appid@</id>
-+	<icon type="stock">snap.newsflash.@appid@</icon>  
++	<icon type="stock">snap.newsflash.@appid@</icon>
    <metadata_license>CC0</metadata_license>
    <project_license>GPL-3.0+</project_license>
    <name>NewsFlash</name>
@@ -35,20 +35,12 @@ diff -Naur a/src/app.rs b/src/app.rs
  use std::sync::Arc;
  use std::time;
 +use std::path::Path;
- 
+
  use crate::content_page::ContentPageState;
  use crate::edit_category_dialog::EditCategoryDialog;
-@@ -21,7 +22,6 @@
- use gdk4::prelude::*;
- use gio::{
-     prelude::PowerProfileMonitorExt, subclass::prelude::*, ApplicationFlags, Notification, NotificationPriority,
--    ThemedIcon,
- };
- use glib::{clone, subclass::types::ObjectSubclass, Continue, SourceId};
- use gtk4::{prelude::*, FileChooserNative};
 @@ -933,10 +933,10 @@
              };
- 
+
              let notification = Notification::new(&summary);
 +            let path = gio::File::for_path(Path::new("/snap/newsflash/current/usr/share/icons/hicolor/symbolic/apps/com.gitlab.newsflash-symbolic.svg"));
              notification.set_body(Some(&message));
