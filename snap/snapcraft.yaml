@@ -48,6 +48,9 @@ parts:
     plugin: meson
     source: https://gitlab.com/news-flash/news_flash_gtk.git
     source-tag: v.2.3.0
+#ext:updatesnap
+#  version-format:
+#    format: 'v.%M.%m.%R'      
     source-depth: 1
     build-environment:
       - RUSTUP_HOME: $CRAFT_STAGE/usr/share/rust
