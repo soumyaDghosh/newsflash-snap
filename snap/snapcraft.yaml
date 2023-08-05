@@ -81,7 +81,7 @@ parts:
       - webkitgtk-6-gnome-2204-sdk/latest/edge
     organize:
       snap/newsflash/current: .
-    parse-info: [ usr/share/metainfo/com.gitlab.newsflash.appdata.xml ]
+    parse-info: [ usr/share/metainfo/io.gitlab.news_flash.NewsFlash.appdata.xml ]
 
   cleanup:
     after:  # Make this part run last; list all your other parts here
