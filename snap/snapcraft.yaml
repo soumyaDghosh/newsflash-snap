@@ -8,7 +8,7 @@ architectures:
 
 license: GPL-3.0
 compression: lzo
-source-code: https://gitlab.com/news-flash/news_flash_gtk
+source-code: https://gitlab.com/news_flash/news_flash_gtk.git
 issues: https://github.com/soumyaDghosh/newsflash-snap/issues
 grade: stable # must be 'stable' to release into candidate/stable channels
 confinement: strict # use 'strict' once you have the right plugs and slots
@@ -21,7 +21,7 @@ slots:
   newsflash:
     interface: dbus
     bus: session
-    name: com.gitlab.newsflash
+    name: io.gitlab.news_flash.NewsFlash
 
 parts:
   rustup:
@@ -46,11 +46,11 @@ parts:
     after: [rustup]
     # See 'snapcraft plugins'
     plugin: meson
-    source: https://gitlab.com/news-flash/news_flash_gtk.git
-    source-tag: v.2.3.0
+    source: https://gitlab.com/news_flash/news_flash_gtk.git
+    source-tag: v.2.3.1
 #ext:updatesnap
 #  version-format:
-#    format: 'v.%M.%m.%R'      
+#    format: 'v.%M.%m.%R'
     source-depth: 1
     build-environment:
       - RUSTUP_HOME: $CRAFT_STAGE/usr/share/rust
@@ -107,8 +107,8 @@ apps:
   newsflash:
     command: usr/bin/com.gitlab.newsflash
     extensions: [gnome]
-    common-id: com.gitlab.newsflash
-    desktop: usr/share/applications/com.gitlab.newsflash.desktop
+    common-id: io.gitlab.news_flash.NewsFlash
+    desktop: usr/share/applications/io.gitlab.news_flash.NewsFlash.desktop
     environment:
       LD_LIBRARY_PATH: $SNAP/webkitgtk-platform/usr/lib/$SNAPCRAFT_ARCH_TRIPLET:$SNAP/webkitgtk-platform/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/webkitgtk-6.0:$LD_LIBRARY_PATH
       GDK_DEBUG: 'portals'
