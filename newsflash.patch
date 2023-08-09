@@ -1,6 +1,6 @@
-diff -Naur a/data/com.gitlab.newsflash.appdata.xml.in.in b/data/com.gitlab.newsflash.appdata.xml.in.in
---- a/data/com.gitlab.newsflash.appdata.xml.in.in	2023-06-04 04:57:58.134903776 +0530
-+++ b/data/com.gitlab.newsflash.appdata.xml.in.in	2023-06-04 04:58:59.618280567 +0530
+diff -Naur a/data/io.gitlab.news_flash.NewsFlash.appdata.xml.in.in b/data/io.gitlab.news_flash.NewsFlash.appdata.xml.in.in
+--- a/data/io.gitlab.news_flash.NewsFlash.appdata.xml.in.in	2023-06-04 04:57:58.134903776 +0530
++++ b/data/io.gitlab.news_flash.NewsFlash.appdata.xml.in.in	2023-06-04 04:58:59.618280567 +0530
 @@ -2,6 +2,7 @@
  <!-- Bilal Elmoussaoui 2019 <bilal.elmoussaoui@gnome.org> -->
  <component type="desktop-application">
@@ -16,9 +16,9 @@ diff -Naur a/data/com.gitlab.newsflash.appdata.xml.in.in b/data/com.gitlab.newsf
 -</component>
 \ No newline at end of file
 +</component>
-diff -Naur a/data/com.gitlab.newsflash.desktop.in.in b/data/com.gitlab.newsflash.desktop.in.in
---- a/data/com.gitlab.newsflash.desktop.in.in	2023-06-04 04:57:24.701276124 +0530
-+++ b/data/com.gitlab.newsflash.desktop.in.in	2023-06-04 04:59:19.166634414 +0530
+diff -Naur a/data/io.gitlab.news_flash.NewsFlash.desktop.in.in b/data/io.gitlab.news_flash.NewsFlash.desktop.in.in
+--- a/data/io.gitlab.news_flash.NewsFlash.desktop.in.in	2023-06-04 04:57:24.701276124 +0530
++++ b/data/io.gitlab.news_flash.NewsFlash.desktop.in.in	2023-06-04 04:59:19.166634414 +0530
 @@ -9,6 +9,6 @@
  Categories=GNOME;GTK;Network;Feed;
  Keywords=Gnome;GTK;RSS;Feed;
@@ -42,7 +42,7 @@ diff -Naur a/src/app.rs b/src/app.rs
              };
 
              let notification = Notification::new(&summary);
-+            let path = gio::File::for_path(Path::new("/snap/newsflash/current/usr/share/icons/hicolor/symbolic/apps/com.gitlab.newsflash-symbolic.svg"));
++            let path = gio::File::for_path(Path::new("/snap/newsflash/current/usr/share/icons/hicolor/symbolic/apps/io.gitlab.news_flash.NewsFlash-symbolic.svg"));
              notification.set_body(Some(&message));
              notification.set_priority(NotificationPriority::Normal);
 -            notification.set_icon(&ThemedIcon::new(APP_ID));
