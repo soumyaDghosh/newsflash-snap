@@ -105,7 +105,7 @@ plugs:
     default-provider: webkitgtk-6-gnome-2204
 apps:
   newsflash:
-    command: usr/bin/com.gitlab.newsflash
+    command: usr/bin/newsflash
     extensions: [gnome]
     common-id: io.gitlab.news_flash.NewsFlash
     desktop: usr/share/applications/io.gitlab.news_flash.NewsFlash.desktop
