@@ -46,7 +46,7 @@ parts:
     after: [rustup]
     # See 'snapcraft plugins'
     plugin: meson
-    source: https://gitlab.com/news_flash/news_flash_gtk.git
+    source: https://gitlab.com/news-flash/news_flash_gtk.git
     source-tag: v.2.3.1
 #ext:updatesnap
 #  version-format:
