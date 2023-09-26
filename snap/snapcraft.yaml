@@ -70,7 +70,7 @@ parts:
       - libappstream-dev
     override-pull: |
       craftctl default
-      patch -p1 < $CRAFT_PROJECT_DIR/newsflash.patch
+      #patch -p1 < $CRAFT_PROJECT_DIR/newsflash.patch
     override-build: |
       craftctl default
       mkdir -p $CRAFT_PART_INSTALL/meta/gui
