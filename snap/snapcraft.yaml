@@ -67,6 +67,7 @@ parts:
     build-packages:
       - libssl-dev
       - libelf1
+      - libappstream-dev
     override-pull: |
       craftctl default
       patch -p1 < $CRAFT_PROJECT_DIR/newsflash.patch
