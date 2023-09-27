@@ -1,5 +1,5 @@
-name: newsflash # you probably want to 'snapcraft register <name>'
-base: core22 # the base snap is the execution environment for this snap
+name: newsflash 
+base: core22
 adopt-info: newsflash
 architectures:
   - build-on: amd64
@@ -10,8 +10,8 @@ license: GPL-3.0
 compression: lzo
 source-code: https://gitlab.com/news_flash/news_flash_gtk.git
 issues: https://github.com/soumyaDghosh/newsflash-snap/issues
-grade: stable # must be 'stable' to release into candidate/stable channels
-confinement: strict # use 'strict' once you have the right plugs and slots
+grade: stable
+confinement: strict 
 
 layout:
   /usr/lib/x86_64-linux-gnu/webkitgtk-6.0:
