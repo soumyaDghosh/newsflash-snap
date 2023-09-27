@@ -44,7 +44,6 @@ parts:
       echo 'Skip Prime'
   newsflash:
     after: [rustup]
-    # See 'snapcraft plugins'
     plugin: meson
     source: https://gitlab.com/news-flash/news_flash_gtk.git
     source-tag: 'v.3.0.1'
@@ -67,10 +66,10 @@ parts:
     build-packages:
       - libssl-dev
       - libelf1
-      - libappstream-dev
+      - blueprint-compiler
     override-pull: |
       craftctl default
-      #patch -p1 < $CRAFT_PROJECT_DIR/newsflash.patch
+      patch -p1 < $CRAFT_PROJECT_DIR/newsflash.patch
     override-build: |
       craftctl default
       mkdir -p $CRAFT_PART_INSTALL/meta/gui
