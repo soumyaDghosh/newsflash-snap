@@ -56,7 +56,7 @@ parts:
     after: [rustup, blueprint-compiler]
     plugin: meson
     source: https://gitlab.com/news-flash/news_flash_gtk.git
-    source-tag: 'v.3.0.1'
+    source-tag: 'v.3.0.2'
 #ext:updatesnap
 #  version-format:
 #    format: 'v.%M.%m.%R'
