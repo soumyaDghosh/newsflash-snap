@@ -23,7 +23,7 @@ index f0d8a180..eab80728 100644
  StartupNotify=true
  X-Purism-FormFactor=Workstation;Mobile;
 diff --git a/src/app.rs b/src/app.rs
-index 3396b555..16ccb738 100644
+index 3396b555..c94a79da 100644
 --- a/src/app.rs
 +++ b/src/app.rs
 @@ -1060,7 +1060,8 @@ impl App {
@@ -32,7 +32,7 @@ index 3396b555..16ccb738 100644
              notification.set_priority(NotificationPriority::Normal);
 -            notification.set_icon(&ThemedIcon::new(APP_ID));
 +            let modified_app_id = format!("snap.newsflash.{}", APP_ID);
-+            notification.set_icon(&ThemedIcon::new(modified_app_id));
++            notification.set_icon(&ThemedIcon::new(&modified_app_id));
  
              self.send_notification(Some("newsflash_sync"), &notification);
          }
