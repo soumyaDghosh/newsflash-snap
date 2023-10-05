@@ -1,25 +1,20 @@
-diff -Naur a/data/io.gitlab.news_flash.NewsFlash.appdata.xml.in.in b/data/io.gitlab.news_flash.NewsFlash.appdata.xml.in.in
---- a/data/io.gitlab.news_flash.NewsFlash.appdata.xml.in.in	2023-06-04 04:57:58.134903776 +0530
-+++ b/data/io.gitlab.news_flash.NewsFlash.appdata.xml.in.in	2023-06-04 04:58:59.618280567 +0530
+diff --git a/data/io.gitlab.news_flash.NewsFlash.appdata.xml.in.in b/data/io.gitlab.news_flash.NewsFlash.appdata.xml.in.in
+index a307ad9f..203368ce 100644
+--- a/data/io.gitlab.news_flash.NewsFlash.appdata.xml.in.in
++++ b/data/io.gitlab.news_flash.NewsFlash.appdata.xml.in.in
 @@ -2,6 +2,7 @@
  <!-- Bilal Elmoussaoui 2019 <bilal.elmoussaoui@gnome.org> -->
  <component type="desktop-application">
    <id>@appid@</id>
-+	<icon type="stock">snap.newsflash.@appid@</icon>
++  <icon type="stock">snap.newsflash.@appid@</icon>
    <metadata_license>CC0</metadata_license>
    <project_license>GPL-3.0+</project_license>
    <name>NewsFlash</name>
-@@ -479,4 +480,4 @@
-   <translation type="gettext">newsflash</translation>
-   <launchable type="desktop-id">@appid@.desktop</launchable>
-   <developer_name>Jan Lukas Gernert</developer_name>
--</component>
-\ No newline at end of file
-+</component>
-diff -Naur a/data/io.gitlab.news_flash.NewsFlash.desktop.in.in b/data/io.gitlab.news_flash.NewsFlash.desktop.in.in
---- a/data/io.gitlab.news_flash.NewsFlash.desktop.in.in	2023-06-04 04:57:24.701276124 +0530
-+++ b/data/io.gitlab.news_flash.NewsFlash.desktop.in.in	2023-06-04 04:59:19.166634414 +0530
-@@ -9,6 +9,6 @@
+diff --git a/data/io.gitlab.news_flash.NewsFlash.desktop.in.in b/data/io.gitlab.news_flash.NewsFlash.desktop.in.in
+index f0d8a180..eab80728 100644
+--- a/data/io.gitlab.news_flash.NewsFlash.desktop.in.in
++++ b/data/io.gitlab.news_flash.NewsFlash.desktop.in.in
+@@ -9,6 +9,6 @@ X-GNOME-UsesNotifications=true
  Categories=GNOME;GTK;Network;Feed;
  Keywords=Gnome;GTK;RSS;Feed;
  # Translators: Do NOT translate or transliterate this text (this is an icon file name)!
@@ -27,27 +22,17 @@ diff -Naur a/data/io.gitlab.news_flash.NewsFlash.desktop.in.in b/data/io.gitlab.
 +Icon=snap.newsflash.@icon@
  StartupNotify=true
  X-Purism-FormFactor=Workstation;Mobile;
-diff -Naur a/src/app.rs b/src/app.rs
---- a/src/app.rs	2023-07-04 09:49:12.550778737 +0530
-+++ b/src/app.rs	2023-07-04 12:59:31.842071861 +0530
-@@ -9,6 +9,7 @@
- use std::rc::Rc;
- use std::sync::Arc;
- use std::time;
-+use std::path::Path;
-
- use crate::content_page::ContentPageState;
- use crate::edit_category_dialog::EditCategoryDialog;
-@@ -933,10 +933,10 @@
-             };
-
+diff --git a/src/app.rs b/src/app.rs
+index 3396b555..16ccb738 100644
+--- a/src/app.rs
++++ b/src/app.rs
+@@ -1060,7 +1060,8 @@ impl App {
              let notification = Notification::new(&summary);
-+            let path = gio::File::for_path(Path::new("/snap/newsflash/current/usr/share/icons/hicolor/symbolic/apps/io.gitlab.news_flash.NewsFlash-symbolic.svg"));
              notification.set_body(Some(&message));
              notification.set_priority(NotificationPriority::Normal);
 -            notification.set_icon(&ThemedIcon::new(APP_ID));
--
-+            notification.set_icon(&gio::FileIcon::new(&path));
++            let modified_app_id = format!("snap.newsflash.{}", APP_ID);
++            notification.set_icon(&ThemedIcon::new(modified_app_id));
+ 
              self.send_notification(Some("newsflash_sync"), &notification);
          }
-     }
