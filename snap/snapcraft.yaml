@@ -50,8 +50,6 @@ parts:
 #ext:updatesnap
 #  version-format:
 #    format: 'v.%M.%m.%R'
-    build-snaps:
-      - blueprint-compiler
     source-depth: 1
     build-environment:
       - RUSTUP_HOME: $CRAFT_STAGE/usr/share/rust
@@ -81,7 +79,8 @@ parts:
         mv $i "`dirname $i`/snap.$CRAFT_PROJECT_NAME.`basename $i`"
       done
     build-snaps:
-      - webkitgtk-6-gnome-2204-sdk/latest/edge
+      - webkitgtk-6-gnome-2204-sdk/latest/stable
+      - blueprint-compiler
     organize:
       snap/newsflash/current: .
     parse-info: [ usr/share/metainfo/io.gitlab.news_flash.NewsFlash.appdata.xml ]
