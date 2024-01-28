@@ -42,6 +42,7 @@ parts:
       done
     override-prime: |
       echo 'Skip Prime'
+
   newsflash:
     after: [rustup]
     plugin: meson
@@ -57,7 +58,6 @@ parts:
       - CARGO_BUILD_JOBS: $CRAFT_PARALLEL_BUILD_COUNT
       - PKG_CONFIG_PATH: /snap/webkitgtk-6-gnome-2204-sdk/current/usr/lib/$CRAFT_ARCH_TRIPLET/pkgconfig:$PKG_CONFIG_PATH
       - PATH: /snap/webkitgtk-6-gnome-2204-sdk/current/usr/bin:$PATH
-      - PYTHONPATH: $CRAFT_STAGE/usr/lib/python3/dist-packages:$PYTHONPATH
       - GI_TYPELIB_PATH: /snap/gnome-42-2204-sdk/current/usr/lib/$CRAFT_ARCH_TRIPLET/girepository-1.0:/snap/gnome-42-2204-sdk/current/usr/lib/girepository-1.0
       - XDG_DATA_DIRS: /snap/webkitgtk-6-gnome-2204-sdk/current/usr/share:$XDG_DATA_DIRS
       - LD_LIBRARY_PATH: /snap/webkitgtk-6-gnome-2204-sdk/current/usr/lib:/snap/webkitgtk-6-gnome-2204-sdk/current/usr/lib/$CRAFT_ARCH_TRIPLET:/snap/webkitgtk-6-gnome-2204-sdk/current/usr/lib/webkitgtk-6.0:/snap/webkitgtk-6-gnome-2204-sdk/current/usr/lib/$CRAFT_ARCH_TRIPLET/girepository-1.0:$LD_LIBRARY_PATH
@@ -90,6 +90,7 @@ plugs:
     interface: content
     target: $SNAP/webkitgtk-platform
     default-provider: webkitgtk-6-gnome-2204
+
 apps:
   newsflash:
     command: usr/bin/io.gitlab.news_flash.NewsFlash
