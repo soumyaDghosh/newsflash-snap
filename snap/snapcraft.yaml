@@ -24,16 +24,6 @@ slots:
     name: io.gitlab.news_flash.NewsFlash
 
 parts:
-  blueprint-compiler:
-    source: https://gitlab.gnome.org/jwestman/blueprint-compiler.git
-    source-tag: 'v0.10.0'
-# ext:updatesnap
-#   version-format:
-#     ignore: true
-    plugin: meson
-    meson-parameters:
-      - --prefix=/usr
-    override-prime: ''
   rustup:
     plugin: nil
     build-packages: [wget]
@@ -53,13 +43,15 @@ parts:
     override-prime: |
       echo 'Skip Prime'
   newsflash:
-    after: [rustup, blueprint-compiler]
+    after: [rustup]
     plugin: meson
     source: https://gitlab.com/news-flash/news_flash_gtk.git
     source-tag: 'v.3.0.2'
 #ext:updatesnap
 #  version-format:
 #    format: 'v.%M.%m.%R'
+    build-snaps:
+      - blueprint-compiler
     source-depth: 1
     build-environment:
       - RUSTUP_HOME: $CRAFT_STAGE/usr/share/rust
