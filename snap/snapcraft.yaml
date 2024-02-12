@@ -24,6 +24,17 @@ slots:
     name: io.gitlab.news_flash.NewsFlash
 
 parts:
+  blueprint-compiler:
+    source: https://gitlab.gnome.org/jwestman/blueprint-compiler.git
+    source-tag: 'v0.10.0'
+# ext:updatesnap
+#   version-format:
+#     ignore: true
+    plugin: meson
+    meson-parameters:
+      - --prefix=/usr
+    override-prime: ''
+
   rustup:
     plugin: nil
     build-packages: [wget]
@@ -44,7 +55,7 @@ parts:
       echo 'Skip Prime'
 
   newsflash:
-    after: [rustup]
+    after: [rustup, blueprint-compiler]
     plugin: meson
     source: https://gitlab.com/news-flash/news_flash_gtk.git
     source-tag: 'v.3.1.1'
@@ -58,6 +69,7 @@ parts:
       - CARGO_BUILD_JOBS: $CRAFT_PARALLEL_BUILD_COUNT
       - PKG_CONFIG_PATH: /snap/webkitgtk-6-gnome-2204-sdk/current/usr/lib/$CRAFT_ARCH_TRIPLET/pkgconfig:$PKG_CONFIG_PATH
       - PATH: /snap/webkitgtk-6-gnome-2204-sdk/current/usr/bin:$PATH
+      - PYTHONPATH: ${CRAFT_STAGE}/usr/lib/python3/dist-packages:$PYTHONPATH
       - GI_TYPELIB_PATH: /snap/gnome-42-2204-sdk/current/usr/lib/$CRAFT_ARCH_TRIPLET/girepository-1.0:/snap/gnome-42-2204-sdk/current/usr/lib/girepository-1.0
       - XDG_DATA_DIRS: /snap/webkitgtk-6-gnome-2204-sdk/current/usr/share:$XDG_DATA_DIRS
       - LD_LIBRARY_PATH: /snap/webkitgtk-6-gnome-2204-sdk/current/usr/lib:/snap/webkitgtk-6-gnome-2204-sdk/current/usr/lib/$CRAFT_ARCH_TRIPLET:/snap/webkitgtk-6-gnome-2204-sdk/current/usr/lib/webkitgtk-6.0:/snap/webkitgtk-6-gnome-2204-sdk/current/usr/lib/$CRAFT_ARCH_TRIPLET/girepository-1.0:$LD_LIBRARY_PATH
@@ -80,7 +92,6 @@ parts:
       done
     build-snaps:
       - webkitgtk-6-gnome-2204-sdk/latest/stable
-      - blueprint-compiler
     organize:
       snap/newsflash/current: .
     parse-info: [ usr/share/metainfo/io.gitlab.news_flash.NewsFlash.appdata.xml ]
