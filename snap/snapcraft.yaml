@@ -52,18 +52,13 @@ parts:
 #    format: 'v.%M.%m.%R'
     source-depth: 1
     build-environment:
-      - CARGO_BUILD_JOBS: $CRAFT_PARALLEL_BUILD_COUNT
-      - PKG_CONFIG_PATH: /snap/webkitgtk-6-gnome-2204-sdk/current/usr/lib/$CRAFT_ARCH_TRIPLET/pkgconfig:$PKG_CONFIG_PATH
-<<<<<<< HEAD
-      - PATH: /snap/webkitgtk-6-gnome-2204-sdk/current/usr/bin:$PATH
-      - PYTHONPATH: ${CRAFT_STAGE}/usr/lib/python3/dist-packages:$PYTHONPATH
-=======
-      - PATH: ${HOME}/.cargo/bin:/snap/webkitgtk-6-gnome-2204-sdk/current/usr/bin:$PATH
-      - PYTHONPATH: $CRAFT_STAGE/usr/lib/python3/dist-packages:$PYTHONPATH
->>>>>>> 4ea8798 (use the rust plugin instead of manual installation)
-      - GI_TYPELIB_PATH: /snap/gnome-42-2204-sdk/current/usr/lib/$CRAFT_ARCH_TRIPLET/girepository-1.0:/snap/gnome-42-2204-sdk/current/usr/lib/girepository-1.0
+      - CARGO_BUILD_JOBS: ${CRAFT_PARALLEL_BUILD_COUNT}
+      - PKG_CONFIG_PATH: /snap/webkitgtk-6-gnome-2204-sdk/current/usr/lib/${CRAFT_ARCH_TRIPLET_BUILD_FOR}/pkgconfig:${PKG_CONFIG_PATH}
+      - PATH: ${HOME}/.cargo/bin:/snap/webkitgtk-6-gnome-2204-sdk/current/usr/bin:${PATH}
+      - PYTHONPATH: ${CRAFT_STAGE}/usr/lib/python3/dist-packages:${PYTHONPATH}
+      - GI_TYPELIB_PATH: /snap/gnome-42-2204-sdk/current/usr/lib/${CRAFT_ARCH_TRIPLET_BUILD_FOR}/girepository-1.0:/snap/gnome-42-2204-sdk/current/usr/lib/girepository-1.0
       - XDG_DATA_DIRS: /snap/webkitgtk-6-gnome-2204-sdk/current/usr/share:$XDG_DATA_DIRS
-      - LD_LIBRARY_PATH: /snap/webkitgtk-6-gnome-2204-sdk/current/usr/lib:/snap/webkitgtk-6-gnome-2204-sdk/current/usr/lib/$CRAFT_ARCH_TRIPLET:/snap/webkitgtk-6-gnome-2204-sdk/current/usr/lib/webkitgtk-6.0:/snap/webkitgtk-6-gnome-2204-sdk/current/usr/lib/$CRAFT_ARCH_TRIPLET/girepository-1.0:$LD_LIBRARY_PATH
+      - LD_LIBRARY_PATH: /snap/webkitgtk-6-gnome-2204-sdk/current/usr/lib:/snap/webkitgtk-6-gnome-2204-sdk/current/usr/lib/${CRAFT_ARCH_TRIPLET_BUILD_FOR}:/snap/webkitgtk-6-gnome-2204-sdk/current/usr/lib/webkitgtk-6.0:/snap/webkitgtk-6-gnome-2204-sdk/current/usr/lib/${CRAFT_ARCH_TRIPLET_BUILD_FOR}/girepository-1.0:${LD_LIBRARY_PATH}
     meson-parameters:
       - --prefix=/snap/newsflash/current/usr
       - -Dbuildtype=release
@@ -73,7 +68,7 @@ parts:
       - libelf1
     override-pull: |
       craftctl default
-      patch -p1 < $CRAFT_PROJECT_DIR/newsflash.patch
+      patch -p1 < ${CRAFT_PROJECT_DIR}/newsflash.patch
     override-build: |
       craftctl default
       mkdir -p $CRAFT_PART_INSTALL/meta/gui
