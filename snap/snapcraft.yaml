@@ -36,23 +36,11 @@ parts:
     override-prime: ''
 
   rustup:
-    plugin: nil
-    build-packages: [wget]
-    build-environment:
-      - RUSTUP_HOME: $CRAFT_PART_INSTALL/usr/share/rust
-      - CARGO_HOME: $CRAFT_PART_INSTALL/usr/share/rust
-      - CARGO_BUILD_JOBS: $CRAFT_PARALLEL_BUILD_COUNT
-    override-pull: |
-      wget https://sh.rustup.rs -O $CRAFT_PART_SRC/rustup-init.sh
-      chmod +x $CRAFT_PART_SRC/rustup-init.sh
-    override-build: |
-      $CRAFT_PART_SRC/rustup-init.sh -y --no-modify-path
-      mkdir -p $CRAFT_PART_INSTALL/usr/bin
-      for i in `ls $RUSTUP_HOME/bin/`; do
-        ln -s ../share/rust/bin/$i $CRAFT_PART_INSTALL/usr/bin/$i
-      done
-    override-prime: |
-      echo 'Skip Prime'
+    plugin: rust
+    source: .
+    rust-channel: "1.76"
+    override-build: ""
+    override-prime: ""
 
   newsflash:
     after: [rustup, blueprint-compiler]
@@ -64,12 +52,15 @@ parts:
 #    format: 'v.%M.%m.%R'
     source-depth: 1
     build-environment:
-      - RUSTUP_HOME: $CRAFT_STAGE/usr/share/rust
-      - CARGO_HOME: $CRAFT_STAGE/usr/share/rust
       - CARGO_BUILD_JOBS: $CRAFT_PARALLEL_BUILD_COUNT
       - PKG_CONFIG_PATH: /snap/webkitgtk-6-gnome-2204-sdk/current/usr/lib/$CRAFT_ARCH_TRIPLET/pkgconfig:$PKG_CONFIG_PATH
+<<<<<<< HEAD
       - PATH: /snap/webkitgtk-6-gnome-2204-sdk/current/usr/bin:$PATH
       - PYTHONPATH: ${CRAFT_STAGE}/usr/lib/python3/dist-packages:$PYTHONPATH
+=======
+      - PATH: ${HOME}/.cargo/bin:/snap/webkitgtk-6-gnome-2204-sdk/current/usr/bin:$PATH
+      - PYTHONPATH: $CRAFT_STAGE/usr/lib/python3/dist-packages:$PYTHONPATH
+>>>>>>> 4ea8798 (use the rust plugin instead of manual installation)
       - GI_TYPELIB_PATH: /snap/gnome-42-2204-sdk/current/usr/lib/$CRAFT_ARCH_TRIPLET/girepository-1.0:/snap/gnome-42-2204-sdk/current/usr/lib/girepository-1.0
       - XDG_DATA_DIRS: /snap/webkitgtk-6-gnome-2204-sdk/current/usr/share:$XDG_DATA_DIRS
       - LD_LIBRARY_PATH: /snap/webkitgtk-6-gnome-2204-sdk/current/usr/lib:/snap/webkitgtk-6-gnome-2204-sdk/current/usr/lib/$CRAFT_ARCH_TRIPLET:/snap/webkitgtk-6-gnome-2204-sdk/current/usr/lib/webkitgtk-6.0:/snap/webkitgtk-6-gnome-2204-sdk/current/usr/lib/$CRAFT_ARCH_TRIPLET/girepository-1.0:$LD_LIBRARY_PATH
