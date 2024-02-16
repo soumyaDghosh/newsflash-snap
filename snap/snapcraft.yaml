@@ -47,7 +47,6 @@ parts:
     after: [rustup, blueprint-compiler]
     plugin: meson
     source: https://gitlab.com/api/v4/projects/8320003/packages/generic/newsflash/${SNAPCRAFT_PROJECT_VERSION}/newsflash-${SNAPCRAFT_PROJECT_VERSION}.tar.xz
-    source-depth: 1
     build-environment:
       - CARGO_BUILD_JOBS: ${CRAFT_PARALLEL_BUILD_COUNT}
       - PKG_CONFIG_PATH: /snap/webkitgtk-6-gnome-2204-sdk/current/usr/lib/${CRAFT_ARCH_TRIPLET_BUILD_FOR}/pkgconfig:${PKG_CONFIG_PATH}
