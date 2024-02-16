@@ -1,5 +1,6 @@
 name: newsflash 
 base: core22
+version: '3.1.3'
 adopt-info: newsflash
 architectures:
   - build-on: amd64
@@ -45,11 +46,7 @@ parts:
   newsflash:
     after: [rustup, blueprint-compiler]
     plugin: meson
-    source: https://gitlab.com/news-flash/news_flash_gtk.git
-    source-tag: 'v.3.1.2'
-#ext:updatesnap
-#  version-format:
-#    format: 'v.%M.%m.%R'
+    source: https://gitlab.com/api/v4/projects/8320003/packages/generic/newsflash/${SNAPCRAFT_PROJECT_VERSION}/newsflash-${SNAPCRAFT_PROJECT_VERSION}.tar.xz
     source-depth: 1
     build-environment:
       - CARGO_BUILD_JOBS: ${CRAFT_PARALLEL_BUILD_COUNT}
