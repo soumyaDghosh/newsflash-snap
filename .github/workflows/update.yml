@@ -1,0 +1,36 @@
+name: Push new tag update to stable branch
+
+on:
+  schedule:
+    # Daily for now
+    - cron: '9 7 * * *'
+  workflow_dispatch:
+
+permissions: write-all
+
+jobs:
+  update-snapcraft-manifest:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Update snapcraft manifest
+        run: |
+          git config user.email "soumyadeepghosh2004@zohomail.in"
+          git config user.name "soumyaDghosh"
+          current_version=$(grep 'version:' snap/snapcraft.yaml | awk -F"'" '{print $2}')
+          new_version="$(git ls-remote --refs --sort='v:refname' --tags https://gitlab.com/news-flash/news_flash_gtk.git | tail --lines=1 | cut --delimiter='/' --fields=3 | cut -c 3-)"
+          if [[ "$current_version" != "$new_version" ]]; then
+            echo "Updating Snapcraft.yaml..."
+            sed -i "s/version: '$current_version'/version: '$new_version'/" snap/snapcraft.yaml
+            echo "Staging the changes"
+            git add snap/snapcraft.yaml
+            git commit -m "Update Snapcraft.yaml to version $new_version"
+            git push
+          else
+            echo "Versions match. No update needed."
+          fi
+      - name: Cleanup
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
