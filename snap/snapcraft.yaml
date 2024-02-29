@@ -1,6 +1,6 @@
 name: newsflash 
 base: core22
-version: '3.1.4'
+version: '3.1.5'
 adopt-info: newsflash
 architectures:
   - build-on: amd64
