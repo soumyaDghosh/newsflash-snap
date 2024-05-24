@@ -65,7 +65,6 @@ parts:
     override-pull: |
       craftctl default
       patch -p1 < ${CRAFT_PROJECT_DIR}/newsflash.patch
-      sed -i 's|0.0.0|3.1.2|' meson.build
     override-build: |
       craftctl default
       mkdir -p $CRAFT_PART_INSTALL/meta/gui
@@ -74,7 +73,7 @@ parts:
         mv $i "`dirname $i`/snap.$CRAFT_PROJECT_NAME.`basename $i`"
       done
     build-snaps:
-      - webkitgtk-6-gnome-2204-sdk/latest/stable
+      - webkitgtk-6-gnome-2204-sdk/latest/edge
     organize:
       snap/newsflash/current: .
     parse-info: [ usr/share/metainfo/io.gitlab.news_flash.NewsFlash.appdata.xml ]
@@ -98,3 +97,4 @@ apps:
       - unity7
       - network
       - network-status
+      - system-observe
