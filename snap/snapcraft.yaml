@@ -43,8 +43,39 @@ parts:
     override-build: ""
     override-prime: ""
 
+  clapper:
+    plugin: meson
+    source: https://github.com/Rafostar/clapper.git
+    source-tag: '0.6.0'
+    source-depth: 1
+    build-snaps:
+      - ffmpeg-2204-sdk
+    build-environment:
+      - PKG_CONFIG_PATH: /snap/ffmpeg-2204-sdk/current/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/pkgconfig:$PKG_CONFIG_PATH
+      - PATH: ${CRAFT_STAGE}/usr/bin:${PATH}
+    meson-parameters:
+      - --prefix=/usr
+      - -Dclapper=enabled
+      - -Dclapper-gtk=enabled
+      - -Dclapper-app=disabled
+      - -Dintrospection=enabled
+      - -Dvapi=enabled
+    build-packages:
+      - libgstreamer-plugins-base1.0-dev
+      - libgudev-1.0-dev
+      - libsass-dev
+      - sassc
+      - libdv4-dev
+      - libdvdread-dev
+      - libdvdnav-dev
+      - libass-dev
+      - libuchardet-dev
+    prime:
+      - -usr/include
+      - -usr/lib/*/pkgconfig
+
   newsflash:
-    after: [rustup, blueprint-compiler]
+    after: [rustup, blueprint-compiler, clapper]
     plugin: meson
     source: https://gitlab.com/api/v4/projects/8320003/packages/generic/newsflash/${SNAPCRAFT_PROJECT_VERSION}/newsflash-${SNAPCRAFT_PROJECT_VERSION}.tar.xz
     build-environment:
@@ -52,7 +83,7 @@ parts:
       - PKG_CONFIG_PATH: /snap/webkitgtk-6-gnome-2204-sdk/current/usr/lib/${CRAFT_ARCH_TRIPLET_BUILD_FOR}/pkgconfig:${PKG_CONFIG_PATH}
       - PATH: ${HOME}/.cargo/bin:/snap/webkitgtk-6-gnome-2204-sdk/current/usr/bin:${PATH}
       - PYTHONPATH: ${CRAFT_STAGE}/usr/lib/python3/dist-packages:${PYTHONPATH}
-      - GI_TYPELIB_PATH: /snap/gnome-42-2204-sdk/current/usr/lib/${CRAFT_ARCH_TRIPLET_BUILD_FOR}/girepository-1.0:/snap/gnome-42-2204-sdk/current/usr/lib/girepository-1.0
+      - GI_TYPELIB_PATH: /snap/gnome-46-2404-sdk/current/usr/lib/${CRAFT_ARCH_TRIPLET_BUILD_FOR}/girepository-1.0:/snap/gnome-46-2404-sdk/current/usr/lib/girepository-1.0:$CRAFT_STAGE/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/girepository-1.0:$GI_TYPELIB_PATH
       - XDG_DATA_DIRS: /snap/webkitgtk-6-gnome-2204-sdk/current/usr/share:$XDG_DATA_DIRS
       - LD_LIBRARY_PATH: /snap/webkitgtk-6-gnome-2204-sdk/current/usr/lib:/snap/webkitgtk-6-gnome-2204-sdk/current/usr/lib/${CRAFT_ARCH_TRIPLET_BUILD_FOR}:/snap/webkitgtk-6-gnome-2204-sdk/current/usr/lib/webkitgtk-6.0:/snap/webkitgtk-6-gnome-2204-sdk/current/usr/lib/${CRAFT_ARCH_TRIPLET_BUILD_FOR}/girepository-1.0:${LD_LIBRARY_PATH}
     meson-parameters:
@@ -85,6 +116,11 @@ plugs:
     target: $SNAP/webkitgtk-platform
     default-provider: webkitgtk-6-gnome-2204
 
+  ffmpeg-2204:
+    interface: content
+    target: ffmpeg-platform
+    default-provider: ffmpeg-2204
+
 apps:
   newsflash:
     command: usr/bin/io.gitlab.news_flash.NewsFlash
@@ -92,7 +128,7 @@ apps:
     common-id: io.gitlab.news_flash.NewsFlash
     desktop: usr/share/applications/io.gitlab.news_flash.NewsFlash.desktop
     environment:
-      LD_LIBRARY_PATH: $SNAP/webkitgtk-platform/usr/lib/$SNAPCRAFT_ARCH_TRIPLET:$SNAP/webkitgtk-platform/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/webkitgtk-6.0:$LD_LIBRARY_PATH
+      LD_LIBRARY_PATH: $SNAP/ffmpeg-platform/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR:$SNAP/webkitgtk-platform/usr/lib/$SNAPCRAFT_ARCH_TRIPLET:$SNAP/webkitgtk-platform/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/webkitgtk-6.0:$LD_LIBRARY_PATH
       GDK_DEBUG: 'portals'
     plugs:
       - unity7
