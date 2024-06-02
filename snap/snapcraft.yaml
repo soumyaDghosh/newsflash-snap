@@ -2,10 +2,10 @@ name: newsflash
 base: core24
 version: '3.3.0'
 adopt-info: newsflash
-architectures:
-  - build-on: amd64
-  - build-on: arm64
-  - build-on: armhf
+# architectures:
+#   - build-on: amd64
+#   - build-on: arm64
+#   - build-on: armhf
 
 license: GPL-3.0
 compression: lzo
@@ -62,6 +62,7 @@ parts:
     build-packages:
       - libssl-dev
       - libelf1
+      - libgstreamer1.0-dev
     override-pull: |
       craftctl default
       patch -p1 < ${CRAFT_PROJECT_DIR}/newsflash.patch
