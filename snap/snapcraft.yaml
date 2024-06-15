@@ -105,16 +105,17 @@ parts:
         mv $i "`dirname $i`/snap.$CRAFT_PROJECT_NAME.`basename $i`"
       done
     build-snaps:
-      - webkitgtk-6-gnome-2204-sdk/latest/edge
+      - webkitgtk-6-gnome-2404-sdk/latest/candidate
+      - webkitgtk-6-gnome-2404/latest/candidate
     organize:
       snap/newsflash/current: .
     parse-info: [ usr/share/metainfo/io.gitlab.news_flash.NewsFlash.appdata.xml ]
 
 plugs:
-  webkitgtk-6-gnome-2204:
+  webkitgtk-6-gnome-2404:
     interface: content
     target: $SNAP/webkitgtk-platform
-    default-provider: webkitgtk-6-gnome-2204
+    default-provider: webkitgtk-6-gnome-2404
 
   ffmpeg-2204:
     interface: content
