@@ -80,12 +80,12 @@ parts:
     source: https://gitlab.com/api/v4/projects/8320003/packages/generic/newsflash/${SNAPCRAFT_PROJECT_VERSION}/newsflash-${SNAPCRAFT_PROJECT_VERSION}.tar.xz
     build-environment:
       - CARGO_BUILD_JOBS: ${CRAFT_PARALLEL_BUILD_COUNT}
-      - PKG_CONFIG_PATH: /snap/webkitgtk-6-gnome-2204-sdk/current/usr/lib/${CRAFT_ARCH_TRIPLET_BUILD_FOR}/pkgconfig:${PKG_CONFIG_PATH}
-      - PATH: ${HOME}/.cargo/bin:/snap/webkitgtk-6-gnome-2204-sdk/current/usr/bin:${PATH}
+      - PKG_CONFIG_PATH: /snap/webkitgtk-6-gnome-2404-sdk/current/usr/lib/${CRAFT_ARCH_TRIPLET_BUILD_FOR}/pkgconfig:${PKG_CONFIG_PATH}
+      - PATH: ${HOME}/.cargo/bin:/snap/webkitgtk-6-gnome-2404-sdk/current/usr/bin:${PATH}
       - PYTHONPATH: ${CRAFT_STAGE}/usr/lib/python3/dist-packages:${PYTHONPATH}
       - GI_TYPELIB_PATH: /snap/gnome-46-2404-sdk/current/usr/lib/${CRAFT_ARCH_TRIPLET_BUILD_FOR}/girepository-1.0:/snap/gnome-46-2404-sdk/current/usr/lib/girepository-1.0:$CRAFT_STAGE/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/girepository-1.0:$GI_TYPELIB_PATH
-      - XDG_DATA_DIRS: /snap/webkitgtk-6-gnome-2204-sdk/current/usr/share:$XDG_DATA_DIRS
-      - LD_LIBRARY_PATH: /snap/webkitgtk-6-gnome-2204-sdk/current/usr/lib:/snap/webkitgtk-6-gnome-2204-sdk/current/usr/lib/${CRAFT_ARCH_TRIPLET_BUILD_FOR}:/snap/webkitgtk-6-gnome-2204-sdk/current/usr/lib/webkitgtk-6.0:/snap/webkitgtk-6-gnome-2204-sdk/current/usr/lib/${CRAFT_ARCH_TRIPLET_BUILD_FOR}/girepository-1.0:${LD_LIBRARY_PATH}
+      - XDG_DATA_DIRS: /snap/webkitgtk-6-gnome-2404-sdk/current/usr/share:$XDG_DATA_DIRS
+      - LD_LIBRARY_PATH: /snap/webkitgtk-6-gnome-2404-sdk/current/usr/lib:/snap/webkitgtk-6-gnome-2404-sdk/current/usr/lib/${CRAFT_ARCH_TRIPLET_BUILD_FOR}:/snap/webkitgtk-6-gnome-2404-sdk/current/usr/lib/webkitgtk-6.0:/snap/webkitgtk-6-gnome-2404-sdk/current/usr/lib/${CRAFT_ARCH_TRIPLET_BUILD_FOR}/girepository-1.0:${LD_LIBRARY_PATH}
     meson-parameters:
       - --prefix=/snap/newsflash/current/usr
       - -Dbuildtype=release
