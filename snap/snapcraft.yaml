@@ -49,9 +49,10 @@ parts:
     source-tag: '0.6.0'
     source-depth: 1
     build-snaps:
-      - ffmpeg-2204-sdk
+      - ffmpeg-2404-sdk/latest/candidate
+      - ffmpeg-2404/latest/candidate
     build-environment:
-      - PKG_CONFIG_PATH: /snap/ffmpeg-2204-sdk/current/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/pkgconfig:$PKG_CONFIG_PATH
+      - PKG_CONFIG_PATH: /snap/ffmpeg-2404-sdk/current/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/pkgconfig:$PKG_CONFIG_PATH
       - PATH: ${CRAFT_STAGE}/usr/bin:${PATH}
     meson-parameters:
       - --prefix=/usr
@@ -94,6 +95,9 @@ parts:
       - libssl-dev
       - libelf1
       - libgstreamer1.0-dev
+    stage-packages:
+      - libicu74
+      - libavif16
     override-pull: |
       craftctl default
       patch -p1 < ${CRAFT_PROJECT_DIR}/newsflash.patch
@@ -117,10 +121,10 @@ plugs:
     target: $SNAP/webkitgtk-platform
     default-provider: webkitgtk-6-gnome-2404
 
-  ffmpeg-2204:
+  ffmpeg-2404:
     interface: content
     target: ffmpeg-platform
-    default-provider: ffmpeg-2204
+    default-provider: ffmpeg-2404
 
 apps:
   newsflash:
