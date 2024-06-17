@@ -17,15 +17,23 @@ distributions.</p>
 </p>
 
 
-<!-- Uncomment and modify this when you have a screenshot
-![my-snap-name](screenshot.png?raw=true "my-snap-name")
+<!--
+![newsflash](screenshot.png?raw=true "newsflash")
 -->
 
 <p align="center">Published for <img src="https://raw.githubusercontent.com/anythingcodes/slack-emoji-for-techies/gh-pages/emoji/tux.png" align="top" width="24" /> with 💝 by Soumyadeep</p>
 
 ## Install
 
+### Stable
     sudo snap install newsflash
+
+### Edge
+    sudo snap install ffmpeg-2404 --candidate
+    sudo snap install webkitgtk-6-gnome-2404 --candidate
+    sudo snap install newsflash --edge
+    sudo snap connect newsflash:ffmpeg-2404 ffmpeg-2404
+    sudo snap connect newsflash:webkitgtk-6-gnome-2404 webkitgtk-6-gnome-2404
 
 [![Get it from the Snap Store](https://snapcraft.io/static/images/badges/en/snap-store-white.svg)](https://snapcraft.io/newsflash)
 
