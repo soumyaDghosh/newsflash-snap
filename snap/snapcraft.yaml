@@ -25,6 +25,12 @@ slots:
     name: io.gitlab.news_flash.NewsFlash
 
 parts:
+  deps:
+    plugin: nil
+    stage-packages:
+      - vulkan-tools
+    prime:
+      - usr/bin/vulkaninfo
   blueprint-compiler:
     source: https://gitlab.gnome.org/jwestman/blueprint-compiler.git
     source-tag: 'v0.12.0'
@@ -134,7 +140,6 @@ apps:
     desktop: usr/share/applications/io.gitlab.news_flash.NewsFlash.desktop
     environment:
       LD_LIBRARY_PATH: $SNAP/ffmpeg-platform/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR:$SNAP/webkitgtk-platform/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR:$SNAP/webkitgtk-platform/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/webkitgtk-6.0:$LD_LIBRARY_PATH
-      GDK_DEBUG: 'portals'
     plugs:
       - unity7
       - network
