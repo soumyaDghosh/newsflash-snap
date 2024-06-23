@@ -34,6 +34,7 @@ distributions.</p>
     sudo snap install newsflash --edge
     sudo snap connect newsflash:ffmpeg-2404 ffmpeg-2404
     sudo snap connect newsflash:webkitgtk-6-gnome-2404 webkitgtk-6-gnome-2404
+    sudo /usr/lib/snapd/snap-discard-ns newsflash
 
 [![Get it from the Snap Store](https://snapcraft.io/static/images/badges/en/snap-store-white.svg)](https://snapcraft.io/newsflash)
 
