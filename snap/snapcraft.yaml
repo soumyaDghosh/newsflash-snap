@@ -1,18 +1,15 @@
 name: newsflash 
 base: core24
-version: '3.3.1'
+version: '3.3.2'
 adopt-info: newsflash
-# architectures:
-#   - build-on: amd64
-#   - build-on: arm64
-#   - build-on: armhf
-
-license: GPL-3.0
 compression: lzo
-source-code: https://gitlab.com/news_flash/news_flash_gtk.git
 issues: https://github.com/soumyaDghosh/newsflash-snap/issues
 grade: stable
-confinement: strict 
+confinement: strict
+platformss:
+  amd64:
+  arm64:
+  armhf:
 
 layout:
   /usr/lib/x86_64-linux-gnu/webkitgtk-6.0:
@@ -25,12 +22,6 @@ slots:
     name: io.gitlab.news_flash.NewsFlash
 
 parts:
-  deps:
-    plugin: nil
-    stage-packages:
-      - vulkan-tools
-    prime:
-      - usr/bin/vulkaninfo
   blueprint-compiler:
     source: https://gitlab.gnome.org/jwestman/blueprint-compiler.git
     source-tag: 'v0.12.0'
@@ -45,7 +36,7 @@ parts:
   rustup:
     plugin: rust
     source: .
-    rust-channel: "1.76"
+    rust-channel: "1.78"
     override-build: ""
     override-prime: ""
 
