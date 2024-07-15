@@ -6,7 +6,7 @@ compression: lzo
 issues: https://github.com/soumyaDghosh/newsflash-snap/issues
 grade: stable
 confinement: strict
-platformss:
+platforms:
   amd64:
   arm64:
   armhf:
