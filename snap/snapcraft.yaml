@@ -36,7 +36,7 @@ parts:
   rustup:
     plugin: rust
     source: .
-    rust-channel: "1.78"
+    rust-channel: "1.79"
     override-build: ""
     override-prime: ""
 
