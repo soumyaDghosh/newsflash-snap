@@ -135,4 +135,5 @@ apps:
       - unity7
       - network
       - network-status
+      - network-observe
       - system-observe
