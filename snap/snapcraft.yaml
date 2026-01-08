@@ -22,21 +22,9 @@ slots:
     name: io.gitlab.news_flash.NewsFlash
 
 parts:
-#   blueprint-compiler:
-#     source: https://gitlab.gnome.org/jwestman/blueprint-compiler.git
-#     source-tag: 'v0.12.0'
-# # ext:updatesnap
-# #   version-format:
-# #     ignore: true
-#     plugin: meson
-#     meson-parameters:
-#       - --prefix=/usr
-#     override-prime: ''
-
   rustup:
     plugin: rust
     source: .
-    rust-channel: "1.79"
     override-build: ""
     override-prime: ""
 
@@ -85,7 +73,7 @@ parts:
     meson-parameters:
       - --prefix=/snap/newsflash/current/usr
       - -Dbuildtype=release
-      - -Doptimization=2
+      - -Doptimization=3
     build-packages:
       - libssl-dev
       - libelf1
@@ -93,16 +81,6 @@ parts:
     stage-packages:
       - libicu74
       - libavif16
-    override-pull: |
-      craftctl default
-      patch -p1 < ${CRAFT_PROJECT_DIR}/newsflash.patch
-    override-build: |
-      craftctl default
-      mkdir -p $CRAFT_PART_INSTALL/meta/gui
-      cp -r $CRAFT_PART_INSTALL/snap/newsflash/current/usr/share/icons $CRAFT_PART_INSTALL/meta/gui/
-      for i in `find $CRAFT_PART_INSTALL/meta/gui/icons -name "*.svg" -o -name "*.png"`; do
-        mv $i "`dirname $i`/snap.$CRAFT_PROJECT_NAME.`basename $i`"
-      done
     build-snaps:
       - webkitgtk-6-gnome-2404-sdk
     organize:
@@ -127,7 +105,10 @@ apps:
     common-id: io.gitlab.news_flash.NewsFlash
     desktop: usr/share/applications/io.gitlab.news_flash.NewsFlash.desktop
     environment:
-      LD_LIBRARY_PATH: $SNAP/ffmpeg-platform/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR:$SNAP/webkitgtk-platform/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR:$SNAP/webkitgtk-platform/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/webkitgtk-6.0:$LD_LIBRARY_PATH
+      LD_LIBRARY_PATH: "$SNAP/ffmpeg-platform/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR:\
+                       $SNAP/webkitgtk-platform/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR:\
+                       $SNAP/webkitgtk-platform/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/webkitgtk-6.0:\
+                       $LD_LIBRARY_PATH"
     plugs:
       - unity7
       - network
