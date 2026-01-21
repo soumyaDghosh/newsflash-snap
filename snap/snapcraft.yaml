@@ -77,7 +77,6 @@ parts:
     build-packages:
       - libclang-20-dev
       - libssl-dev
-      - libelf1
       - libgstreamer1.0-dev
     build-snaps:
       - webkitgtk-6-gnome-2404-sdk
