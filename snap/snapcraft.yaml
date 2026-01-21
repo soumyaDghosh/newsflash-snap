@@ -1,6 +1,6 @@
 name: newsflash 
 base: core24
-version: '4.2.1'
+version: '4.1.4'
 adopt-info: newsflash
 compression: lzo
 issues: https://github.com/soumyaDghosh/newsflash-snap/issues
@@ -13,7 +13,7 @@ platforms:
 
 layout:
   /usr/lib/x86_64-linux-gnu/webkitgtk-6.0:
-    bind: $SNAP/webkitgtk-platform/usr/lib/x86_64-linux-gnu/webkitgtk-6.0
+    symlink: $SNAP/webkitgtk-platform/usr/lib/x86_64-linux-gnu/webkitgtk-6.0
 
 slots:
   newsflash:
@@ -67,7 +67,7 @@ parts:
     build-environment:
       - CARGO_BUILD_JOBS: ${CRAFT_PARALLEL_BUILD_COUNT}
       - PKG_CONFIG_PATH: /snap/webkitgtk-6-gnome-2404-sdk/current/usr/lib/${CRAFT_ARCH_TRIPLET_BUILD_FOR}/pkgconfig:/snap/ffmpeg-2404-sdk/current/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/pkgconfig:${PKG_CONFIG_PATH}
-      - GI_TYPELIB_PATH: ${CRAFT_STAGE}/usr/lib/${CRAFT_ARCH_TRIPLET_BUILD_FOR}/girepository-1.0:${GI_TYPELIB_PATH}
+      - GI_TYPELIB_PATH: /snap/webkitgtk-6-gnome-2404-sdk/current/usr/lib/${CRAFT_ARCH_TRIPLET_BUILD_FOR}/girepository-1.0:${CRAFT_STAGE}/usr/lib/${CRAFT_ARCH_TRIPLET_BUILD_FOR}/girepository-1.0:${GI_TYPELIB_PATH}
       - LD_LIBRARY_PATH: /snap/webkitgtk-6-gnome-2404-sdk/current/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR:/snap/ffmpeg-2404-sdk/current/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR:${LD_LIBRARY_PATH}
       - PATH: ${HOME}/.cargo/bin:${PATH}
     meson-parameters:
@@ -75,12 +75,10 @@ parts:
       - -Dbuildtype=release
       - -Doptimization=3
     build-packages:
+      - libclang-20-dev
       - libssl-dev
       - libelf1
       - libgstreamer1.0-dev
-    stage-packages:
-      - libicu74
-      - libavif16
     build-snaps:
       - webkitgtk-6-gnome-2404-sdk
     organize:
