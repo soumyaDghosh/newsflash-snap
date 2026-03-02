@@ -1,6 +1,6 @@
 name: newsflash 
 base: core24
-version: '5.0.0-beta1'
+version: '5.0.0-beta2'
 adopt-info: newsflash
 compression: lzo
 issues: https://github.com/soumyaDghosh/newsflash-snap/issues
